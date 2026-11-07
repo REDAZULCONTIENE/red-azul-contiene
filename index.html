@@ -1,4 +1,456 @@
-<!-- JAVASCRIPT DE INTERACTIVIDAD -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Azul Contiene - Acompañamiento y Escucha Comunitario</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Inter & Outfit) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        azul: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bae0fd',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#0f3854',
+                        },
+                        calido: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .pulse-breath {
+            animation: breathe 12s infinite ease-in-out;
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); background-color: #e0effe; }
+            33% { transform: scale(1.4); background-color: #bae0fd; }
+            50% { transform: scale(1.4); background-color: #93c5fd; }
+            90% { transform: scale(1); background-color: #e0effe; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans leading-relaxed selection:bg-azul-500 selection:text-white pb-20">
+
+    <!-- BOTONES FLOTANTES DE EMERGENCIA Y WHATSAPP -->
+    <div class="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2">
+        <a href="https://wa.me/5492281584644?text=Hola,%20me%20comunico%20desde%20la%20web%20Red%20Azul%20Contiene." target="_blank" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-5 rounded-full shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
+            <i class="fa-brands fa-whatsapp text-2xl"></i>
+            <span>ESCRIBÍNOS</span>
+        </a>
+        <a href="tel:107" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-5 rounded-full shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 animate-bounce">
+            <i class="fa-solid fa-phone-volume text-xl"></i>
+            <span>URGENCIA 107</span>
+        </a>
+    </div>
+
+    <!-- ENCABEZADO / NAVBAR -->
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-azul-600 to-azul-500 flex items-center justify-center text-white text-2xl shadow-md">
+                    <i class="fa-solid fa-hands-holding-child"></i>
+                </div>
+                <div>
+                    <span class="font-heading font-bold text-xl text-azul-900 block leading-none">RED AZUL CONTIENE</span>
+                    <span class="text-xs text-slate-500 font-medium">Azul, Buenos Aires</span>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex items-center gap-6 font-medium text-sm text-slate-600">
+                <a href="#auxilios" class="hover:text-azul-600 transition">Primeros Auxilios</a>
+                <a href="#recursos" class="hover:text-azul-600 transition">Red en Azul</a>
+                <a href="#triaje" class="hover:text-azul-600 transition">Niveles de Apoyo</a>
+                <a href="#contacto" class="bg-azul-600 hover:bg-azul-700 text-white px-4 py-2 rounded-xl transition shadow-sm hover:shadow">Solicitar Ayuda</a>
+            </nav>
+
+            <button onclick="toggleMobileMenu()" class="md:hidden text-slate-600 hover:text-azul-600 text-2xl focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-3">
+            <a href="#auxilios" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Primeros Auxilios</a>
+            <a href="#recursos" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Red en Azul</a>
+            <a href="#triaje" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Niveles de Apoyo</a>
+            <a href="#contacto" onclick="toggleMobileMenu()" class="block py-2 font-bold text-azul-600">Solicitar Ayuda / Sumarme</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative bg-gradient-to-b from-azul-50 via-white to-slate-50 pt-12 pb-20 overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 text-center relative z-10">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-azul-100 text-azul-800 text-xs sm:text-sm font-semibold mb-6">
+                <i class="fa-solid fa-heart text-red-500"></i> Proyecto Comunitario Vecinal
+            </span>
+            <h1 class="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl text-azul-900 leading-tight mb-6">
+                Nadie en Azul tiene que atravesar sus momentos difíciles en soledad.
+            </h1>
+            <p class="text-base sm:text-xl text-slate-600 max-w-3xl mx-auto mb-8 font-light italic bg-white/70 p-4 rounded-2xl border border-azul-100 shadow-sm">
+                "Estar presentes donde el sistema no llega: acompañar con una escucha sincera, un mate de por medio, sin etiquetas y sin prejuicios."
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#auxilios" class="bg-azul-600 hover:bg-azul-700 text-white font-semibold px-6 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                    <i class="fa-solid fa-lungs"></i> Necesito Calmarme Ahora
+                </a>
+                <a href="https://wa.me/5492281584644?text=Hola,%20necesito%20información%20sobre%20Red%20Azul%20Contiene." target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Contactar por WhatsApp
+                </a>
+            </div>
+            
+            <div class="mt-12 text-xs text-slate-400">
+                Coordinación General: Gustavo Ariel Sosa (Técnico en Administración) • Azul, Bs. As.
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN INTERACTIVA: PRIMEROS AUXILIOS EMOCIONALES -->
+    <section id="auxilios" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <h2 class="font-heading font-bold text-2xl sm:text-4xl text-azul-900 mb-3">Primeros Auxilios Emocionales</h2>
+            <p class="text-slate-600">Si estás sintiendo mucha angustia, palpitaciones o un ataque de pánico, utilizá estas dos herramientas sencillas para recuperar la calma paso a paso.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- HERRAMIENTA 1: RESPIRACIÓN GUIADA -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 flex flex-col items-center text-center">
+                <div class="inline-block px-3 py-1 bg-azul-100 text-azul-700 rounded-lg text-xs font-bold mb-4">
+                    EJERCICIO DE RESPIRACIÓN
+                </div>
+                <h3 class="font-heading font-bold text-xl text-slate-800 mb-2">Respiración Diafragmática 4-2-6</h3>
+                <p class="text-xs sm:text-sm text-slate-500 mb-6">Seguí el ritmo del círculo para desacelerar tu ritmo cardíaco.</p>
+
+                <!-- Círculo animado -->
+                <div class="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center mb-6">
+                    <div id="breath-circle" class="w-36 h-36 rounded-full bg-azul-100 flex items-center justify-center transition-all duration-1000 shadow-inner">
+                        <span id="breath-text" class="font-heading font-bold text-azul-900 text-lg sm:text-xl">Preparado</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button id="btn-start-breath" onclick="toggleBreath()" class="bg-azul-600 hover:bg-azul-700 text-white font-medium px-5 py-2.5 rounded-xl transition flex items-center gap-2">
+                        <i class="fa-solid fa-play"></i> Iniciar Guía
+                    </button>
+                </div>
+                <span id="breath-phase" class="text-xs font-semibold text-azul-600 mt-4 h-4">Presioná iniciar cuando estés listo/a.</span>
+            </div>
+
+            <!-- HERRAMIENTA 2: ANCLAJE 5-4-3-2-1 -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="inline-block px-3 py-1 bg-calido-100 text-calido-600 rounded-lg text-xs font-bold mb-4">
+                    REORIENTACIÓN SENSORIAL
+                </div>
+                <h3 class="font-heading font-bold text-xl text-slate-800 mb-2">Técnica de Anclaje 5-4-3-2-1</h3>
+                <p class="text-xs sm:text-sm text-slate-500 mb-6">Traé tu mente al momento presente haciendo clic en cada paso a medida que lo completes:</p>
+
+                <div class="space-y-3">
+                    <div onclick="toggleStep(this)" class="p-3.5 rounded-xl border border-slate-200 hover:border-azul-300 cursor-pointer transition flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-azul-100 text-azul-700 font-bold flex items-center justify-center text-sm group-hover:bg-azul-600 group-hover:text-white transition">5</span>
+                            <span class="text-sm font-medium text-slate-700">Mirá a tu alrededor e identificá <strong>5 cosas que puedas VER</strong>.</span>
+                        </div>
+                        <i class="fa-regular fa-circle-check text-slate-300 text-xl check-icon"></i>
+                    </div>
+
+                    <div onclick="toggleStep(this)" class="p-3.5 rounded-xl border border-slate-200 hover:border-azul-300 cursor-pointer transition flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-azul-100 text-azul-700 font-bold flex items-center justify-center text-sm group-hover:bg-azul-600 group-hover:text-white transition">4</span>
+                            <span class="text-sm font-medium text-slate-700">Tocá o sentí <strong>4 cosas que tengas cerca</strong> (tu ropa, una mesa).</span>
+                        </div>
+                        <i class="fa-regular fa-circle-check text-slate-300 text-xl check-icon"></i>
+                    </div>
+
+                    <div onclick="toggleStep(this)" class="p-3.5 rounded-xl border border-slate-200 hover:border-azul-300 cursor-pointer transition flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-azul-100 text-azul-700 font-bold flex items-center justify-center text-sm group-hover:bg-azul-600 group-hover:text-white transition">3</span>
+                            <span class="text-sm font-medium text-slate-700">Prestá atención a <strong>3 sonidos</strong> que puedas escuchar.</span>
+                        </div>
+                        <i class="fa-regular fa-circle-check text-slate-300 text-xl check-icon"></i>
+                    </div>
+
+                    <div onclick="toggleStep(this)" class="p-3.5 rounded-xl border border-slate-200 hover:border-azul-300 cursor-pointer transition flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-azul-100 text-azul-700 font-bold flex items-center justify-center text-sm group-hover:bg-azul-600 group-hover:text-white transition">2</span>
+                            <span class="text-sm font-medium text-slate-700">Reconocé <strong>2 olores</strong> a tu alrededor.</span>
+                        </div>
+                        <i class="fa-regular fa-circle-check text-slate-300 text-xl check-icon"></i>
+                    </div>
+
+                    <div onclick="toggleStep(this)" class="p-3.5 rounded-xl border border-slate-200 hover:border-azul-300 cursor-pointer transition flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-azul-100 text-azul-700 font-bold flex items-center justify-center text-sm group-hover:bg-azul-600 group-hover:text-white transition">1</span>
+                            <span class="text-sm font-medium text-slate-700">Identificá <strong>1 sabor</strong> o da una inhalación profunda.</span>
+                        </div>
+                        <i class="fa-regular fa-circle-check text-slate-300 text-xl check-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPLORADOR Y MAPEO EN AZUL -->
+    <section id="recursos" class="bg-slate-100 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                <div>
+                    <h2 class="font-heading font-bold text-2xl sm:text-4xl text-azul-900 mb-2">Red y Recursos en Azul</h2>
+                    <p class="text-slate-600">Encontrá el efector de salud, CAPS de tu barrio o Comercio Amigo más cercano.</p>
+                </div>
+
+                <!-- Filtros -->
+                <div class="mt-4 md:mt-0 flex flex-wrap gap-2">
+                    <button onclick="filterResources('todos')" class="filter-btn active bg-azul-600 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">Todos</button>
+                    <button onclick="filterResources('hospital')" class="filter-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-xl transition hover:border-azul-300">Hospital / Urgencia</button>
+                    <button onclick="filterResources('caps')" class="filter-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-xl transition hover:border-azul-300">CAPS (Barrios)</button>
+                    <button onclick="filterResources('comercio')" class="filter-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-xl transition hover:border-azul-300">Comercios Amigos</button>
+                </div>
+            </div>
+
+            <!-- Grilla de Tarjetas de Recursos -->
+            <div id="resource-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Hospital Pintos -->
+                <div class="resource-card hospital bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-1 bg-red-100 text-red-700 rounded-lg text-xs font-bold">Salud / Guardia 24hs</span>
+                            <i class="fa-solid fa-hospital-user text-red-500 text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-1">Hospital Municipal Dr. Ángel Pintos</h3>
+                        <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-location-dot text-slate-400"></i> Amado Diab 250, Azul</p>
+                        <p class="text-sm text-slate-600 mb-4">Guardia general, atención de emergencias psiquiátricas y consultorios externos.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-red-600">Línea Directa: 107</span>
+                        <a href="tel:107" class="text-xs bg-red-50 hover:bg-red-100 text-red-700 font-semibold px-3 py-1.5 rounded-lg transition">Llamar</a>
+                    </div>
+                </div>
+
+                <!-- CAPS Villa Piazza Sur -->
+                <div class="resource-card caps bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-1 bg-azul-100 text-azul-700 rounded-lg text-xs font-bold">Atención Primaria</span>
+                            <i class="fa-solid fa-house-medical text-azul-500 text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-1">CAPS N° 6 (Villa Piazza Sur)</h3>
+                        <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-location-dot text-slate-400"></i> Barrio Villa Piazza Sur, Azul</p>
+                        <p class="text-sm text-slate-600 mb-4">Atención primaria, enfermería, equipo de salud mental barrial y servicio social.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-medium text-slate-500">Horario: 8:00 a 14:00</span>
+                        <span class="text-xs font-semibold text-azul-600">Presencial</span>
+                    </div>
+                </div>
+
+                <!-- CAPS San Francisco -->
+                <div class="resource-card caps bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-1 bg-azul-100 text-azul-700 rounded-lg text-xs font-bold">Atención Primaria</span>
+                            <i class="fa-solid fa-house-medical text-azul-500 text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-1">CAPS N° 1 (San Francisco)</h3>
+                        <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-location-dot text-slate-400"></i> Barrio San Francisco, Azul</p>
+                        <p class="text-sm text-slate-600 mb-4">Orientación territorial, apoyo en turnos médicos y acompañamiento vecinal.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-medium text-slate-500">Horario: 8:00 a 14:00</span>
+                        <span class="text-xs font-semibold text-azul-600">Presencial</span>
+                    </div>
+                </div>
+
+                <!-- Comercio Amigo Almacén -->
+                <div class="resource-card comercio bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-1 bg-calido-100 text-calido-600 rounded-lg text-xs font-bold">Comercio Amigo</span>
+                            <i class="fa-solid fa-mug-hot text-calido-500 text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-1">Despensa y Almacén Don Pedro</h3>
+                        <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-location-dot text-slate-400"></i> Barrio Monte Viggiano, Azul</p>
+                        <p class="text-sm text-slate-600 mb-4">Punto de mate, folletería de la Red Azul Contiene y escucha cordial sin prisas.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-semibold text-calido-600">Punto Adherido</span>
+                        <span class="text-xs text-slate-400">Escucha Barrial</span>
+                    </div>
+                </div>
+
+                <!-- Comercio Amigo Farmacia -->
+                <div class="resource-card comercio bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-1 bg-calido-100 text-calido-600 rounded-lg text-xs font-bold">Comercio Amigo</span>
+                            <i class="fa-solid fa-prescription-bottle-medical text-calido-500 text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-1">Farmacia Barrial Centro</h3>
+                        <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-location-dot text-slate-400"></i> Zona Centro, Azul</p>
+                        <p class="text-sm text-slate-600 mb-4">Información sobre la red de acompañamiento en la espera de psicofármacos.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-semibold text-calido-600">Punto Adherido</span>
+                        <span class="text-xs text-slate-400">Orientación</span>
+                    </div>
+                </div>
+
+                <!-- Centro de Salud Mental -->
+                <div class="resource-card hospital bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-1 bg-azul-100 text-azul-700 rounded-lg text-xs font-bold">Salud Mental</span>
+                            <i class="fa-solid fa-user-doctor text-azul-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-1">Centro de Salud Mental de Azul</h3>
+                        <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-location-dot text-slate-400"></i> Ciudad de Azul</p>
+                        <p class="text-sm text-slate-600 mb-4">Atención ambulatoria especializada en psicología y psiquiatría pública.</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-medium text-slate-500">Consultorios Externos</span>
+                        <span class="text-xs font-semibold text-azul-600">Turnos Programados</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TRIAJE Y NIVELES DE APOYO COMUNITARIO -->
+    <section id="triaje" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <h2 class="font-heading font-bold text-2xl sm:text-4xl text-azul-900 mb-3">Semáforo de Apoyo Comunitario</h2>
+            <p class="text-slate-600">Organizamos nuestra respuesta vecinal según la necesidad de cada persona para asegurar un acompañamiento adecuado.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- NIVEL VERDE -->
+            <div class="bg-emerald-50 rounded-3xl p-6 border border-emerald-200 relative overflow-hidden">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white font-bold text-xl flex items-center justify-center mb-4 shadow-md">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
+                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Nivel Verde</span>
+                <h3 class="font-heading font-bold text-xl text-emerald-950 mb-3">Soledad y Escucha</h3>
+                <p class="text-sm text-emerald-900 mb-4">Para vecinos que pasan momentos de soledad, requieren una charla tranquila o ayuda en trámites sencillos.</p>
+                <ul class="text-xs text-emerald-800 space-y-2 border-t border-emerald-200/60 pt-4">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Mates e historias compartidas</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Revitalización en Comercios Amigos</li>
+                </ul>
+            </div>
+
+            <!-- NIVEL AMARILLO -->
+            <div class="bg-amber-50 rounded-3xl p-6 border border-amber-200 relative overflow-hidden">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white font-bold text-xl flex items-center justify-center mb-4 shadow-md">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <span class="text-xs font-extrabold uppercase tracking-wider text-amber-700">Nivel Amarillo</span>
+                <h3 class="font-heading font-bold text-xl text-amber-950 mb-3">Acompañamiento en la Espera</h3>
+                <p class="text-sm text-amber-900 mb-4">Para personas con turnos médicos a 30-60 días, con angustia por la demora o dificultad para retirar fármacos.</p>
+                <ul class="text-xs text-amber-800 space-y-2 border-t border-amber-200/60 pt-4">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-600"></i> Visita presencial en el "Día 15"</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-600"></i> Acompañamiento presencial al hospital</li>
+                </ul>
+            </div>
+
+            <!-- NIVEL ROJO -->
+            <div class="bg-rose-50 rounded-3xl p-6 border border-rose-200 relative overflow-hidden">
+                <div class="w-12 h-12 rounded-2xl bg-rose-600 text-white font-bold text-xl flex items-center justify-center mb-4 shadow-md">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <span class="text-xs font-extrabold uppercase tracking-wider text-rose-700">Nivel Rojo</span>
+                <h3 class="font-heading font-bold text-xl text-rose-950 mb-3">Crisis o Urgencia</h3>
+                <p class="text-sm text-rose-900 mb-4">Para ataques de pánico agudos, descompensación psiquiátrica o ideación suicida explícita.</p>
+                <ul class="text-xs text-rose-800 space-y-2 border-t border-rose-200/60 pt-4">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-600"></i> Presencia en dupla sin dejar solo</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-600"></i> Derivación directa al 107 / Guardia Pintos</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULARIO DE CONTACTO / VOLUNTARIADO -->
+    <section id="contacto" class="bg-white py-16 border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="bg-gradient-to-br from-azul-900 to-azul-800 rounded-3xl p-6 sm:p-10 text-white shadow-xl">
+                <div class="text-center mb-8">
+                    <h2 class="font-heading font-bold text-2xl sm:text-3xl mb-2">Conectemos en Azul</h2>
+                    <p class="text-azul-200 text-sm">Ya sea que necesites que alguien te acompañe a un turno o quieras sumarte como voluntario Centinela.</p>
+                </div>
+
+                <form onsubmit="handleFormSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-azul-200 mb-1">Nombre o Apodo</label>
+                            <input type="text" required placeholder="Tu nombre" class="w-full bg-azul-800/80 border border-azul-700 rounded-xl px-4 py-2.5 text-white placeholder-azul-400 focus:outline-none focus:border-azul-400 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-azul-200 mb-1">Teléfono o WhatsApp</label>
+                            <input type="tel" required placeholder="Ej: 2281-XXXXXX" class="w-full bg-azul-800/80 border border-azul-700 rounded-xl px-4 py-2.5 text-white placeholder-azul-400 focus:outline-none focus:border-azul-400 text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-azul-200 mb-1">Barrio en Azul</label>
+                            <input type="text" placeholder="Ej: Villa Piazza, Centro..." class="w-full bg-azul-800/80 border border-azul-700 rounded-xl px-4 py-2.5 text-white placeholder-azul-400 focus:outline-none focus:border-azul-400 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-azul-200 mb-1">Motivo</label>
+                            <select class="w-full bg-azul-800/80 border border-azul-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-azul-400 text-sm">
+                                <option value="acompanamiento">Necesito que me acompañen / Escucha</option>
+                                <option value="centinela">Quiero ser Voluntario "Centinela"</option>
+                                <option value="comercio">Tengo un negocio y quiero ser Comercio Amigo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-azul-200 mb-1">Mensaje breve (Opcional)</label>
+                        <textarea rows="3" placeholder="Contanos brevemente en qué podemos ayudarte..." class="w-full bg-azul-800/80 border border-azul-700 rounded-xl px-4 py-2.5 text-white placeholder-azul-400 focus:outline-none focus:border-azul-400 text-sm"></textarea>
+                    </div>
+
+                    <div class="text-center pt-2">
+                        <button type="submit" class="bg-calido-500 hover:bg-calido-600 text-slate-900 font-bold px-8 py-3 rounded-xl transition shadow-lg w-full sm:w-auto">
+                            Enviar Solicitud por WhatsApp
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-xs border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
+            <p class="font-semibold text-slate-300">RED AZUL CONTIENE • AZUL, PROVINCIA DE BUENOS AIRES</p>
+            <p>Fundador y Coordinador General: Gustavo Ariel Sosa (Técnico en Administración)</p>
+            <p class="text-slate-500 max-w-2xl mx-auto">Este proyecto no reemplaza la atención médica profesional, sino que genera un puente comunitario de escucha y acompañamiento en cercanía.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT DE INTERACTIVIDAD -->
     <script>
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
@@ -89,7 +541,7 @@
             const nombre = inputs[0].value;
             const telefono = inputs[1].value;
             const barrio = inputs[2].value;
-            const motivo = inputs[3].value;
+            const motivo = inputs[3].options[inputs[3].selectedIndex].text;
             const mensaje = inputs[4].value;
 
             const textoWhatsApp = `*Nueva Solicitud - Red Azul Contiene*%0A%0A` +
@@ -103,3 +555,5 @@
             window.open(url, '_blank');
         }
     </script>
+</body>
+</html>
