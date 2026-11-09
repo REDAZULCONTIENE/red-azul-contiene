@@ -395,19 +395,18 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
                 <div>
                     <h2 class="font-heading font-bold text-2xl sm:text-4xl text-azul-900 mb-2">Red y Recursos en Azul</h2>
-                    <p class="text-slate-600">Encontrá el efector de salud, CAPS de tu barrio o Comercio Amigo más cercano.</p>
+                    <p class="text-slate-600">Encontrá el efector de salud o CAPS de tu barrio más cercano.</p>
                 </div>
 
-                <!-- Filtros -->
+                <!-- Filtros actualizados sin comercios -->
                 <div class="mt-4 md:mt-0 flex flex-wrap gap-2">
                     <button onclick="filterResources('todos')" class="filter-btn active bg-azul-600 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">Todos</button>
                     <button onclick="filterResources('hospital')" class="filter-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-xl transition hover:border-azul-300">Hospital / Urgencia</button>
                     <button onclick="filterResources('caps')" class="filter-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-xl transition hover:border-azul-300">CAPS (Barrios)</button>
-                    <button onclick="filterResources('comercio')" class="filter-btn bg-white text-slate-600 border border-slate-200 text-xs font-semibold px-4 py-2 rounded-xl transition hover:border-azul-300">Comercios Amigos</button>
                 </div>
             </div>
 
-            <!-- Grilla de Tarjetas de Recursos -->
+            <!-- Grilla de Tarjetas de Recursos (Solo Hospital y CAPS) -->
             <div id="resource-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
                 <!-- Hospital Pintos -->
@@ -461,40 +460,6 @@
                     </div>
                 </div>
 
-                <!-- Comercio Amigo Almacén -->
-                <div class="resource-card comercio bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="px-2.5 py-1 bg-calido-100 text-calido-600 rounded-lg text-xs font-bold">Comercio Amigo</span>
-                            <i class="fa-solid fa-mug-hot text-calido-500 text-xl"></i>
-                        </div>
-                        <h3 class="font-bold text-slate-800 text-lg mb-1">Despensa y Almacén Don Pedro</h3>
-                        <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-location-dot text-slate-400"></i> Barrio Monte Viggiano, Azul</p>
-                        <p class="text-sm text-slate-600 mb-4">Punto de mate, folletería de la Red Azul Contiene y escucha cordial sin prisas.</p>
-                    </div>
-                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-xs font-semibold text-calido-600">Punto Adherido</span>
-                        <span class="text-xs text-slate-400">Escucha Barrial</span>
-                    </div>
-                </div>
-
-                <!-- Comercio Amigo Farmacia -->
-                <div class="resource-card comercio bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="px-2.5 py-1 bg-calido-100 text-calido-600 rounded-lg text-xs font-bold">Comercio Amigo</span>
-                            <i class="fa-solid fa-prescription-bottle-medical text-calido-500 text-xl"></i>
-                        </div>
-                        <h3 class="font-bold text-slate-800 text-lg mb-1">Farmacia Barrial Centro</h3>
-                        <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-location-dot text-slate-400"></i> Zona Centro, Azul</p>
-                        <p class="text-sm text-slate-600 mb-4">Información sobre la red de acompañamiento en la espera de psicofármacos.</p>
-                    </div>
-                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-xs font-semibold text-calido-600">Punto Adherido</span>
-                        <span class="text-xs text-slate-400">Orientación</span>
-                    </div>
-                </div>
-
                 <!-- Centro de Salud Mental -->
                 <div class="resource-card hospital bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
                     <div>
@@ -534,7 +499,7 @@
                 <p class="text-sm text-emerald-900 mb-4">Para vecinos que pasan momentos de soledad, requieren una charla tranquila o ayuda en trámites sencillos.</p>
                 <ul class="text-xs text-emerald-800 space-y-2 border-t border-emerald-200/60 pt-4">
                     <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Mates e historias compartidas</li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Revitalización en Comercios Amigos</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> Espacios de encuentro barrial</li>
                 </ul>
             </div>
 
@@ -599,7 +564,6 @@
                             <select class="w-full bg-azul-800/80 border border-azul-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-azul-400 text-sm">
                                 <option value="acompanamiento">Necesito que me acompañen / Escucha</option>
                                 <option value="centinela">Quiero ser Voluntario "Centinela"</option>
-                                <option value="comercio">Tengo un negocio y quiero ser Comercio Amigo</option>
                             </select>
                         </div>
                     </div>
