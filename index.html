@@ -81,9 +81,9 @@
             
             <nav class="hidden md:flex items-center gap-6 font-medium text-sm text-slate-600">
                 <a href="#salud-mental" class="hover:text-azul-600 transition">Salud Mental</a>
+                <a href="#muro-experiencias" class="hover:text-azul-600 transition">Muro de Experiencias</a>
                 <a href="#auxilios" class="hover:text-azul-600 transition">Primeros Auxilios</a>
                 <a href="#recursos" class="hover:text-azul-600 transition">Red en Azul</a>
-                <a href="#triaje" class="hover:text-azul-600 transition">Niveles de Apoyo</a>
                 <a href="#contacto" class="bg-azul-600 hover:bg-azul-700 text-white px-4 py-2 rounded-xl transition shadow-sm hover:shadow">Solicitar Ayuda</a>
             </nav>
 
@@ -95,9 +95,9 @@
         <!-- Menú Móvil -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-3">
             <a href="#salud-mental" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Salud Mental</a>
+            <a href="#muro-experiencias" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Muro de Experiencias</a>
             <a href="#auxilios" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Primeros Auxilios</a>
             <a href="#recursos" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Red en Azul</a>
-            <a href="#triaje" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Niveles de Apoyo</a>
             <a href="#contacto" onclick="toggleMobileMenu()" class="block py-2 font-bold text-azul-600">Solicitar Ayuda / Sumarme</a>
         </div>
     </header>
@@ -118,8 +118,8 @@
                 <a href="#auxilios" class="bg-azul-600 hover:bg-azul-700 text-white font-semibold px-6 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
                     <i class="fa-solid fa-lungs"></i> Necesito Calmarme Ahora
                 </a>
-                <a href="https://wa.me/5492281584644?text=Hola,%20necesito%20información%20sobre%20Red%20Azul%20Contiene." target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Contactar por WhatsApp
+                <a href="#muro-experiencias" class="bg-white hover:bg-slate-100 text-slate-700 font-semibold px-6 py-3.5 rounded-xl border border-slate-200 shadow-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-comments text-azul-600"></i> Leer / Compartir Experiencias
                 </a>
             </div>
             
@@ -258,6 +258,50 @@
                 </div>
 
             </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: MURO COMUNITARIO DE EXPERIENCIAS Y PERSPECTIVAS -->
+    <section id="muro-experiencias" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <span class="text-azul-600 font-bold uppercase tracking-wider text-xs bg-azul-100 px-3 py-1 rounded-full">Voces y Vivencias Comunitarias</span>
+            <h2 class="font-heading font-bold text-2xl sm:text-4xl text-azul-900 mt-3 mb-3">Muro de Expresión y Miradas Compartidas</h2>
+            <p class="text-slate-600 text-sm sm:text-base">
+                Leer cómo otras personas experimentan la ansiedad, la soledad o el proceso de salir adelante nos recuerda que lo que sentimos es válido y que **no estamos solos**. Escribí tu experiencia con o sin tu nombre.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            
+            <!-- FORMULARIO PARA PUBLICAR -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm lg:col-span-1 sticky top-24">
+                <h3 class="font-heading font-bold text-lg text-azul-900 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-azul-600"></i> Compartí lo que sentís
+                </h3>
+                <p class="text-xs text-slate-500 mb-6">Podés publicar tu sentir de forma 100% anónima o poner tu nombre si lo preferís.</p>
+
+                <form onsubmit="publicarEnMuro(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Nombre o Apodo (Opcional)</label>
+                        <input type="text" id="autor-input" placeholder="Ej: Anónimo, Vecino de Piazza..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 placeholder-slate-400 text-xs focus:outline-none focus:border-azul-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tu vivencia o perspectiva</label>
+                        <textarea id="mensaje-input" rows="5" required placeholder="Contá cómo sentís la ansiedad, qué te ayudó a superarla o qué le dirías a alguien que está pasando por lo mismo..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 placeholder-slate-400 text-xs focus:outline-none focus:border-azul-500"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-azul-600 hover:bg-azul-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Publicar en el Muro
+                    </button>
+                </form>
+            </div>
+
+            <!-- CONTENEDOR DEL MURO (LISTA DE RELATOS) -->
+            <div class="lg:col-span-2 space-y-4" id="muro-contenedor">
+                <!-- Se poblará automáticamente mediante JavaScript -->
+            </div>
+
         </div>
     </section>
 
@@ -591,6 +635,72 @@
             menu.classList.toggle('hidden');
         }
 
+        // --- SISTEMA DEL MURO DE EXPERIENCIAS ---
+        const experienciasBase = [
+            {
+                autor: "Anónimo",
+                fecha: "Hace unas horas",
+                texto: "Cuando me da un ataque de ansiedad siento como si el pecho me apretara y no pudiera respirar hondo. Lo que me sirve es parar un segundo, tocar una superficie fría y recordar que es pasajero, que mi cuerpo solo está respondiendo con miedo pero que no estoy en peligro."
+            },
+            {
+                autor: "Vecina de San Francisco",
+                fecha: "Ayer",
+                texto: "Para mí la depresión no fue llorar todo el día, sino levantarme sin ganas de nada, sentir la casa pesada. Romper el silencio y salir a tomar un mate con una vecina me empezó a devolver la luz muy de a poco. Hablar alivia la mente."
+            },
+            {
+                autor: "Anónimo",
+                fecha: "Hace 3 días",
+                texto: "La soledad a veces pesa más a la noche. Saber que hay espacios de escucha en Azul donde nadie te juzga da una tranquilidad enorme. No se queden callados, siempre hay alguien dispuesto a sostener."
+            }
+        ];
+
+        function cargarMuro() {
+            const contenedor = document.getElementById('muro-contenedor');
+            const guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
+            const listaCompleta = [...guardados, ...experienciasBase];
+
+            contenedor.innerHTML = listaCompleta.map(item => `
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-azul-300 transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-azul-100 text-azul-700 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <span class="font-bold text-slate-800 text-sm">${item.autor}</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400">${item.fecha}</span>
+                    </div>
+                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed italic">
+                        "${item.texto}"
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        function publicarEnMuro(event) {
+            event.preventDefault();
+            const autorInput = document.getElementById('autor-input').value.trim();
+            const mensajeInput = document.getElementById('mensaje-input').value.trim();
+
+            const nuevoAporte = {
+                autor: autorInput !== "" ? autorInput : "Anónimo/a",
+                fecha: "Recién publicado",
+                texto: mensajeInput
+            };
+
+            const guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
+            guardados.unshift(nuevoAporte);
+            localStorage.setItem('muro_experiencias', JSON.stringify(guardados));
+
+            document.getElementById('autor-input').value = '';
+            document.getElementById('mensaje-input').value = '';
+
+            cargarMuro();
+        }
+
+        // Cargar el muro al iniciar la página
+        window.addEventListener('DOMContentLoaded', cargarMuro);
+
         // Respiración guiada
         let breathInterval = null;
         function toggleBreath() {
@@ -667,10 +777,9 @@
             });
         }
 
-        // Envío de formulario directo a tu WhatsApp (+54 9 2281 584644)
+        // Envío de formulario general a WhatsApp
         function handleFormSubmit(event) {
             event.preventDefault();
-            
             const inputs = event.target.querySelectorAll('input, select, textarea');
             const nombre = inputs[0].value;
             const telefono = inputs[1].value;
