@@ -675,26 +675,32 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT DE INTERACTIVIDAD -->
+    <!-- JAVASCRIPT DE INTERACTIVIDAD Y MODERACIÓN -->
     <script>
+        // CLAVE DE ADMINISTRADOR PARA MODERAR/BORRAR MENSAJES
+        const CLAVE_ADMIN = "azul2026";
+
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         }
 
-        // --- SISTEMA DEL MURO DE EXPERIENCIAS ---
+        // --- SISTEMA DEL MURO DE EXPERIENCIAS CON MODERACIÓN ---
         const experienciasBase = [
             {
+                id: "base-1",
                 autor: "Anónimo",
                 fecha: "Hace unas horas",
-                texto: "Когда me da un ataque de ansiedad siento como si el pecho me apretara y no pudiera respirar hondo. Lo que me sirve es parar un segundo, tocar una superficie fría y recordar que es pasajero, que mi cuerpo solo está respondiendo con miedo pero que no estoy en peligro."
+                texto: "Cuando me da un ataque de ansiedad siento como si el pecho me apretara y no pudiera respirar hondo. Lo que me sirve es parar un segundo, tocar una superficie fría y recordar que es pasajero, que mi cuerpo solo está respondiendo con miedo pero que no estoy en peligro."
             },
             {
+                id: "base-2",
                 autor: "Vecina de San Francisco",
                 fecha: "Ayer",
                 texto: "Para mí la depresión no fue llorar todo el día, sino levantarme sin ganas de nada, sentir la casa pesada. Romper el silencio y salir a tomar un mate con una vecina me empezó a devolver la luz muy de a poco. Hablar alivia la mente."
             },
             {
+                id: "base-3",
                 autor: "Anónimo",
                 fecha: "Hace 3 días",
                 texto: "La soledad a veces pesa más a la noche. Saber que hay espacios de escucha en Azul donde nadie te juzga da una tranquilidad enorme. No se queden callados, siempre hay alguien dispuesto a sostener."
@@ -703,19 +709,34 @@
 
         function cargarMuro() {
             const contenedor = document.getElementById('muro-contenedor');
-            const guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
-            const listaCompleta = [...guardados, ...experienciasBase];
+            if (!contenedor) return;
+            
+            let guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
+            let eliminadosBase = JSON.parse(localStorage.getItem('muro_base_eliminados')) || [];
+            
+            const baseFiltrada = experienciasBase.filter(exp => !eliminadosBase.includes(exp.id));
+            const listaCompleta = [...guardados, ...baseFiltrada];
+
+            if (listaCompleta.length === 0) {
+                contenedor.innerHTML = `<div class="bg-white rounded-2xl p-6 text-center text-slate-500 text-sm">No hay testimonios publicados en este momento.</div>`;
+                return;
+            }
 
             contenedor.innerHTML = listaCompleta.map(item => `
-                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-azul-300 transition">
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-azul-300 transition relative group">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-2">
                             <div class="w-8 h-8 rounded-full bg-azul-100 text-azul-700 flex items-center justify-center font-bold text-xs">
                                 <i class="fa-solid fa-user"></i>
                             </div>
-                            <span class="font-bold text-slate-800 text-sm">${item.autor}</span>
+                            <span class="font-bold text-slate-800 text-sm">${item.autor || 'Anónimo'}</span>
                         </div>
-                        <span class="text-[11px] text-slate-400">${item.fecha}</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-[11px] text-slate-400">${item.fecha || 'Recién'}</span>
+                            <button onclick="borrarPublicacion('${item.id}')" title="Borrar publicación" class="text-slate-300 hover:text-red-500 text-xs transition px-1 py-0.5 rounded">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
                     </div>
                     <p class="text-slate-600 text-xs sm:text-sm leading-relaxed italic">
                         "${item.texto}"
@@ -729,13 +750,16 @@
             const autorInput = document.getElementById('autor-input').value.trim();
             const mensajeInput = document.getElementById('mensaje-input').value.trim();
 
+            if (!mensajeInput) return;
+
             const nuevoAporte = {
+                id: 'user-' + Date.now(),
                 autor: autorInput !== "" ? autorInput : "Anónimo/a",
                 fecha: "Recién publicado",
                 texto: mensajeInput
             };
 
-            const guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
+            let guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
             guardados.unshift(nuevoAporte);
             localStorage.setItem('muro_experiencias', JSON.stringify(guardados));
 
@@ -743,6 +767,32 @@
             document.getElementById('mensaje-input').value = '';
 
             cargarMuro();
+        }
+
+        function borrarPublicacion(id) {
+            const password = prompt("Ingresá la clave de moderador para eliminar este comentario:");
+            
+            if (password === null) return;
+
+            if (password === CLAVE_ADMIN) {
+                if (confirm("¿Estás seguro de que querés eliminar esta publicación?")) {
+                    let guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
+                    
+                    if (id && id.startsWith('user-')) {
+                        guardados = guardados.filter(item => item.id !== id);
+                        localStorage.setItem('muro_experiencias', JSON.stringify(guardados));
+                    } else {
+                        let eliminadosBase = JSON.parse(localStorage.getItem('muro_base_eliminados')) || [];
+                        if (id) eliminadosBase.push(id);
+                        localStorage.setItem('muro_base_eliminados', JSON.stringify(eliminadosBase));
+                    }
+                    
+                    alert("Publicación eliminada correctamente.");
+                    cargarMuro();
+                }
+            } else {
+                alert("Clave incorrecta. No tenés permisos para borrar.");
+            }
         }
 
         window.addEventListener('DOMContentLoaded', cargarMuro);
@@ -843,227 +893,6 @@
             const url = `https://wa.me/5492281584644?text=${textoWhatsApp}`;
             window.open(url, '_blank');
         }
-   <script>
-    // CLAVE DE ADMINISTRADOR PARA MODERAR/BORRAR MENSAJES (Podés cambiarla por la que quieras)
-    const CLAVE_ADMIN = "azul2026";
-
-    function toggleMobileMenu() {
-        const menu = document.getElementById('mobile-menu');
-        menu.classList.toggle('hidden');
-    }
-
-    // --- SISTEMA DEL MURO DE EXPERIENCIAS CON MODERACIÓN ---
-    const experienciasBase = [
-        {
-            id: "base-1",
-            autor: "Anónimo",
-            fecha: "Hace unas horas",
-            texto: "Cuando me da un ataque de ansiedad siento como si el pecho me apretara y no pudiera respirar hondo. Lo que me sirve es parar un segundo, tocar una superficie fría y recordar que es pasajero, que mi cuerpo solo está respondiendo con miedo pero que no estoy en peligro."
-        },
-        {
-            id: "base-2",
-            autor: "Vecina de San Francisco",
-            fecha: "Ayer",
-            texto: "Para mí la depresión no fue llorar todo el día, sino levantarme sin ganas de nada, sentir la casa pesada. Romper el silencio y salir a tomar un mate con una vecina me empezó a devolver la luz muy de a poco. Hablar alivia la mente."
-        },
-        {
-            id: "base-3",
-            autor: "Anónimo",
-            fecha: "Hace 3 días",
-            texto: "La soledad a veces pesa más a la noche. Saber que hay espacios de escucha en Azul donde nadie te juzga da una tranquilidad enorme. No se queden callados, siempre hay alguien dispuesto a sostener."
-        }
-    ];
-
-    function cargarMuro() {
-        const contenedor = document.getElementById('muro-contenedor');
-        
-        // Cargar publicados por usuarios
-        let guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
-        
-        // Cargar eliminados de la base para que no vuelvan a aparecer
-        let eliminadosBase = JSON.parse(localStorage.getItem('muro_base_eliminados')) || [];
-        
-        // Filtrar experiencias base que fueron borradas
-        const baseFiltrada = experienciasBase.filter(exp => !eliminadosBase.includes(exp.id));
-
-        const listaCompleta = [...guardados, ...baseFiltrada];
-
-        if (listaCompleta.length === 0) {
-            contenedor.innerHTML = `<div class="bg-white rounded-2xl p-6 text-center text-slate-500 text-sm">No hay testimonios publicados en este momento.</div>`;
-            return;
-        }
-
-        contenedor.innerHTML = listaCompleta.map(item => `
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-azul-300 transition relative group">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-full bg-azul-100 text-azul-700 flex items-center justify-center font-bold text-xs">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <span class="font-bold text-slate-800 text-sm">${item.autor}</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-[11px] text-slate-400">${item.fecha}</span>
-                        <!-- Botón discreto de borrado -->
-                        <button onclick="borrarPublicacion('${item.id}')" title="Borrar publicación (Requiere clave)" class="text-slate-300 hover:text-red-500 text-xs transition px-1 py-0.5 rounded">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                </div>
-                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed italic">
-                    "${item.texto}"
-                </p>
-            </div>
-        `).join('');
-    }
-
-    function publicarEnMuro(event) {
-        event.preventDefault();
-        const autorInput = document.getElementById('autor-input').value.trim();
-        const mensajeInput = document.getElementById('mensaje-input').value.trim();
-
-        const nuevoAporte = {
-            id: 'user-' + Date.now(), // ID único para poder borrarlo después
-            autor: autorInput !== "" ? autorInput : "Anónimo/a",
-            fecha: "Recién publicado",
-            texto: mensajeInput
-        };
-
-        const guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
-        guardados.unshift(nuevoAporte);
-        localStorage.setItem('muro_experiencias', JSON.stringify(guardados));
-
-        document.getElementById('autor-input').value = '';
-        document.getElementById('mensaje-input').value = '';
-
-        cargarMuro();
-    }
-
-    // FUNCIÓN DE BORRADO PROTEGIDA POR CLAVE
-    function borrarPublicacion(id) {
-        const password = prompt("Ingresá la clave de moderador para eliminar este comentario:");
-        
-        if (password === null) return; // Cancelado por el usuario
-
-        if (password === CLAVE_ADMIN) {
-            if (confirm("¿Estás seguro de que querés eliminar esta publicación?")) {
-                let guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
-                
-                // Si es un mensaje cargado por un usuario
-                if (id.startsWith('user-')) {
-                    guardados = guardados.filter(item => item.id !== id);
-                    localStorage.setItem('muro_experiencias', JSON.stringify(guardados));
-                } else {
-                    // Si es un mensaje de la base predeterminada
-                    let eliminadosBase = JSON.parse(localStorage.getItem('muro_base_eliminados')) || [];
-                    eliminadosBase.push(id);
-                    localStorage.setItem('muro_base_eliminados', JSON.stringify(eliminadosBase));
-                }
-                
-                alert("Publicación eliminada correctamente.");
-                cargarMuro();
-            }
-        } else {
-            alert("Clave incorrecta. No tenés permisos para borrar.");
-        }
-    }
-
-    window.addEventListener('DOMContentLoaded', cargarMuro);
-
-    // Respiración guiada
-    let breathInterval = null;
-    function toggleBreath() {
-        const btn = document.getElementById('btn-start-breath');
-        const circle = document.getElementById('breath-circle');
-        const text = document.getElementById('breath-text');
-        const phase = document.getElementById('breath-phase');
-
-        if (breathInterval) {
-            clearInterval(breathInterval);
-            breathInterval = null;
-            btn.innerHTML = '<i class="fa-solid fa-play"></i> Iniciar Guía';
-            circle.classList.remove('pulse-breath');
-            text.innerText = 'Preparado';
-            phase.innerText = 'Presioná iniciar cuando estés listo/a.';
-            return;
-        }
-
-        btn.innerHTML = '<i class="fa-solid fa-stop"></i> Detener';
-        circle.classList.add('pulse-breath');
-        
-        const runCycle = () => {
-            text.innerText = 'Inhalá (4s)';
-            phase.innerText = 'Tomá aire suavemente por la nariz...';
-            
-            setTimeout(() => {
-                if(!breathInterval) return;
-                text.innerText = 'Retené (2s)';
-                phase.innerText = 'Mantené el aire sin forzar...';
-            }, 4000);
-
-            setTimeout(() => {
-                if(!breathInterval) return;
-                text.innerText = 'Exhalá (6s)';
-                phase.innerText = 'Soltá el aire lentamente por la boca...';
-            }, 6000);
-        };
-
-        runCycle();
-        breathInterval = setInterval(runCycle, 12000);
-    }
-
-    // Checklist de Anclaje
-    function toggleStep(element) {
-        element.classList.toggle('bg-azul-50');
-        element.classList.toggle('border-azul-400');
-        const icon = element.querySelector('.check-icon');
-        if (icon.classList.contains('fa-regular')) {
-            icon.classList.remove('fa-regular', 'fa-circle-check', 'text-slate-300');
-            icon.classList.add('fa-solid', 'fa-circle-check', 'text-azul-600');
-        } else {
-            icon.classList.remove('fa-solid', 'fa-circle-check', 'text-azul-600');
-            icon.classList.add('fa-regular', 'fa-circle-check', 'text-slate-300');
-        }
-    }
-
-    // Filtro de recursos
-    function filterResources(category) {
-        const buttons = document.querySelectorAll('.filter-btn');
-        buttons.forEach(btn => {
-            btn.classList.remove('active', 'bg-azul-600', 'text-white');
-            btn.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
-        });
-        event.target.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
-        event.target.classList.add('active', 'bg-azul-600', 'text-white');
-
-        const cards = document.querySelectorAll('.resource-card');
-        cards.forEach(card => {
-            if (category === 'todos' || card.classList.contains(category)) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
-
-    // Envío de formulario general a WhatsApp
-    function handleFormSubmit(event) {
-        event.preventDefault();
-        const inputs = event.target.querySelectorAll('input, select, textarea');
-        const nombre = inputs[0].value;
-        const telefono = inputs[1].value;
-        const barrio = inputs[2].value;
-        const motivo = inputs[3].options[inputs[3].selectedIndex].text;
-        const mensaje = inputs[4].value;
-
-        const textoWhatsApp = `*Nueva Solicitud - Red Azul Contiene*%0A%0A` +
-            `*Nombre:* ${nombre}%0A` +
-            `*Teléfono:* ${telefono}%0A` +
-            `*Barrio:* ${barrio}%0A` +
-            `*Motivo:* ${motivo}%0A` +
-            `*Mensaje:* ${mensaje}`;
-
-        const url = `https://wa.me/5492281584644?text=${textoWhatsApp}`;
-        window.open(url, '_blank');
-    }
-</script>
+    </script>
+</body>
+</html>
