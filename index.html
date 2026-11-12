@@ -79,11 +79,12 @@
                 </div>
             </div>
             
-            <nav class="hidden md:flex items-center gap-6 font-medium text-sm text-slate-600">
+            <nav class="hidden md:flex items-center gap-5 font-medium text-sm text-slate-600">
                 <a href="#salud-mental" class="hover:text-azul-600 transition">Salud Mental</a>
                 <a href="#marco-legal-fechas" class="hover:text-azul-600 transition">Efemérides y Leyes</a>
-                <a href="#muro-experiencias" class="hover:text-azul-600 transition">Muro de Experiencias</a>
+                <a href="#muro-experiencias" class="hover:text-azul-600 transition">Muro</a>
                 <a href="#auxilios" class="hover:text-azul-600 transition">Primeros Auxilios</a>
+                <a href="#voluntarios" class="hover:text-azul-600 transition">Voluntarios</a>
                 <a href="#recursos" class="hover:text-azul-600 transition">Red en Azul</a>
                 <a href="#contacto" class="bg-azul-600 hover:bg-azul-700 text-white px-4 py-2 rounded-xl transition shadow-sm hover:shadow">Solicitar Ayuda</a>
             </nav>
@@ -99,6 +100,7 @@
             <a href="#marco-legal-fechas" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Efemérides y Leyes</a>
             <a href="#muro-experiencias" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Muro de Experiencias</a>
             <a href="#auxilios" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Primeros Auxilios</a>
+            <a href="#voluntarios" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Voluntarios Centinela</a>
             <a href="#recursos" onclick="toggleMobileMenu()" class="block py-2 text-slate-600">Red en Azul</a>
             <a href="#contacto" onclick="toggleMobileMenu()" class="block py-2 font-bold text-azul-600">Solicitar Ayuda / Sumarme</a>
         </div>
@@ -132,28 +134,42 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- PANEL PRIVADO DE SEGUIMIENTO Y COMPROMISO MUTUO (OCULTO POR DEFECTO)      -->
+    <!-- PANEL PRIVADO DE COORDINACIÓN (SEGUIMIENTO Y ALTA DE VOLUNTARIOS)         -->
     <!-- ========================================================================= -->
     <section id="panel-seguimiento-privado" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 my-8 bg-slate-900 text-slate-100 rounded-3xl border-2 border-azul-500 shadow-2xl">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-700">
             <div>
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold mb-2">
-                    <i class="fa-solid fa-lock"></i> ÁREA PRIVADA DE COORDINACIÓN (SOLO LOCAL EN ESTE DISPOSITIVO)
+                    <i class="fa-solid fa-lock"></i> ÁREA PRIVADA DE COORDINACIÓN (SOLO ADMINISTRADOR)
                 </span>
-                <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white">Registro y Seguimiento de Acompañamiento</h2>
-                <p class="text-xs sm:text-sm text-slate-400 mt-1">Gestión seria de casos, compromiso mutuo y acompañamiento antes y después del turno psicológico.</p>
+                <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white">Gestión de Acompañamientos y Voluntarios</h2>
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">Administración formal de casos, compromisos mutuos y alta exclusiva de Voluntarios Centinela.</p>
             </div>
             <div class="flex flex-wrap gap-2">
-                <button onclick="exportarSeguimientosCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow">
-                    <i class="fa-solid fa-file-excel"></i> Respaldar / Descargar Planilla
+                <button onclick="descargarPlanillaCompromisoSeguimiento()" class="bg-azul-600 hover:bg-azul-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-file-contract"></i> Descargar Acta Compromiso (Acompañado)
                 </button>
-                <button onclick="cerrarPanelPrivado()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                <button onclick="exportarSeguimientosCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-file-excel"></i> Respaldar Excel (CSV)
+                </button>
+                <button onclick="cerrarPanelPrivado()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-2">
                     <i class="fa-solid fa-eye-slash"></i> Cerrar Panel
                 </button>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8 items-start">
+        <!-- PESTAÑAS DEL PANEL PRIVADO -->
+        <div class="flex gap-3 mt-6 border-b border-slate-700 pb-4">
+            <button id="tab-btn-seguimientos" onclick="cambiarTabPrivado('seguimientos')" class="bg-azul-600 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                <i class="fa-solid fa-clipboard-user mr-1"></i> 1. Seguimiento de Personas
+            </button>
+            <button id="tab-btn-voluntarios" onclick="cambiarTabPrivado('voluntarios')" class="bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-xl transition">
+                <i class="fa-solid fa-user-shield mr-1"></i> 2. Gestión de Voluntarios Centinela
+            </button>
+        </div>
+
+        <!-- CONTENIDO PESTAÑA 1: SEGUIMIENTO DE PERSONAS -->
+        <div id="tab-privado-seguimientos" class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6 items-start">
             <!-- FORMULARIO DE ALTA DE PERSONA Y COMPROMISO -->
             <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 lg:col-span-1">
                 <h3 class="font-heading font-bold text-lg text-white mb-1 flex items-center gap-2">
@@ -228,6 +244,64 @@
 
                 <div id="lista-seguimientos" class="space-y-4">
                     <!-- Tarjetas generadas dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENIDO PESTAÑA 2: ALTA EXCLUSIVA DE VOLUNTARIOS CENTINELA -->
+        <div id="tab-privado-voluntarios" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6 items-start">
+            <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 lg:col-span-1">
+                <h3 class="font-heading font-bold text-lg text-white mb-1 flex items-center gap-2">
+                    <i class="fa-solid fa-user-check text-emerald-400"></i> Habilitar Voluntario Centinela
+                </h3>
+                <p class="text-xs text-slate-400 mb-5">Solo el administrador puede dar de alta voluntarios tras firmar su compromiso. Se mostrará públicamente en la web.</p>
+
+                <form onsubmit="agregarVoluntario(event)" class="space-y-3.5">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre y Apellido *</label>
+                        <input type="text" id="vol-nombre" required placeholder="Ej: María Gómez" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-azul-400">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Barrio en Azul *</label>
+                        <input type="text" id="vol-barrio" required placeholder="Ej: Villa Piazza Sur / Centro" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-azul-400">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Compromiso Asumido *</label>
+                        <textarea id="vol-compromiso-texto" rows="3" required placeholder="Ej: Escucha activa barrial, acompañamiento a turnos médicos y confidencialidad absoluta." class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-azul-400"></textarea>
+                    </div>
+
+                    <div class="bg-emerald-900/30 border border-emerald-700/60 rounded-xl p-3">
+                        <label class="flex items-start gap-2.5 cursor-pointer">
+                            <input type="checkbox" id="vol-acta-firmada" required class="mt-0.5 rounded text-emerald-500 focus:ring-0">
+                            <span class="text-[11px] text-emerald-100 leading-snug">
+                                <strong>Planilla de Compromiso Firmada:</strong> Certifico que el voluntario suscribió su acta de responsabilidad y confidencialidad.
+                            </span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus-circle"></i> Publicar Voluntario Habilitado
+                    </button>
+                </form>
+
+                <div class="mt-4 pt-4 border-t border-slate-700">
+                    <button onclick="descargarPlanillaCompromisoVoluntario()" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-file-arrow-down"></i> Descargar Planilla de Voluntario
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-4">
+                <div class="bg-slate-800/80 px-4 py-3 rounded-xl border border-slate-700 flex flex-wrap items-center justify-between gap-2">
+                    <span class="text-xs text-slate-300">Listado de Voluntarios Habilitados (Visibles para toda la comunidad):</span>
+                    <button onclick="copiarCodigoVoluntariosFijos()" class="text-[11px] bg-azul-900 hover:bg-azul-800 text-azul-200 border border-azul-700 px-3 py-1 rounded-lg transition">
+                        <i class="fa-solid fa-code"></i> Copiar lista para fijar en HTML
+                    </button>
+                </div>
+                <div id="lista-voluntarios-admin" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Se renderiza desde JS -->
                 </div>
             </div>
         </div>
@@ -574,6 +648,31 @@
         </div>
     </section>
 
+    <!-- ========================================================================= -->
+    <!-- SECCIÓN PÚBLICA DE VOLUNTARIOS CENTINELA (SOLO LECTURA PARA EL PÚBLICO)   -->
+    <!-- ========================================================================= -->
+    <section id="voluntarios" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white rounded-3xl my-8 border border-slate-200 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 border-b border-slate-100 pb-6">
+            <div>
+                <span class="text-emerald-700 font-bold uppercase tracking-wider text-xs bg-emerald-50 px-3 py-1 rounded-full">Equipo Habilitado • Compromiso Barrial</span>
+                <h2 class="font-heading font-bold text-2xl sm:text-4xl text-azul-900 mt-3 mb-2">Voluntarios "Centinela" en Azul</h2>
+                <p class="text-slate-600 text-sm max-w-2xl">
+                    Personas de nuestros barrios habilitadas por la coordinación tras suscribir su <strong>Planilla de Compromiso y Confidencialidad</strong>. Nadie se inscribe de forma automática: cada referente asume una responsabilidad real con la comunidad.
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="descargarPlanillaCompromisoVoluntario()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-file-lines text-azul-600"></i> Ver / Descargar Planilla de Compromiso
+                </button>
+            </div>
+        </div>
+
+        <!-- GRILLA PÚBLICA DE VOLUNTARIOS (SOLO SE CARGA DESDE EL PANEL ADMIN) -->
+        <div id="grilla-voluntarios-publica" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Se poblará automáticamente -->
+        </div>
+    </section>
+
     <!-- EXPLORADOR Y MAPEO EN AZUL -->
     <section id="recursos" class="bg-slate-100 py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -724,7 +823,7 @@
             <div class="bg-gradient-to-br from-azul-900 to-azul-800 rounded-3xl p-6 sm:p-10 text-white shadow-xl">
                 <div class="text-center mb-8">
                     <h2 class="font-heading font-bold text-2xl sm:text-3xl mb-2">Conectemos en Azul</h2>
-                    <p class="text-azul-200 text-sm">Ya sea que necesites que alguien te acompañe a un turno o quieras sumarte como voluntario Centinela.</p>
+                    <p class="text-azul-200 text-sm">Ya sea que necesites que alguien te acompañe a un turno o quieras postularte para entrevistarte como voluntario Centinela.</p>
                 </div>
 
                 <form onsubmit="handleFormSubmit(event)" class="space-y-4">
@@ -748,7 +847,7 @@
                             <label class="block text-xs font-semibold text-azul-200 mb-1">Motivo</label>
                             <select class="w-full bg-azul-800/80 border border-azul-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-azul-400 text-sm">
                                 <option value="acompanamiento">Necesito que me acompañen / Escucha</option>
-                                <option value="centinela">Quiero ser Voluntario "Centinela"</option>
+                                <option value="centinela">Quiero entrevistarme para ser Voluntario "Centinela"</option>
                             </select>
                         </div>
                     </div>
@@ -775,18 +874,18 @@
             <p>Fundador y Coordinador General: Gustavo Ariel Sosa (Técnico en Administración)</p>
             <p class="text-slate-500 max-w-2xl mx-auto">Este proyecto no reemplaza la atención médica profesional, sino que genera un puente comunitario de escucha y acompañamiento en cercanía.</p>
             
-            <!-- BOTÓN DE ACCESO AL PANEL PRIVADO DE SEGUIMIENTO -->
+            <!-- BOTÓN DE ACCESO AL PANEL PRIVADO DE COORDINACIÓN -->
             <div class="pt-4">
                 <button onclick="abrirPanelPrivado()" class="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-azul-400 border border-slate-800 hover:border-slate-700 px-3 py-1.5 rounded-lg transition">
-                    <i class="fa-solid fa-lock"></i> Acceso Coordinación (Seguimiento Privado)
+                    <i class="fa-solid fa-lock"></i> Acceso Coordinación (Seguimiento y Voluntarios)
                 </button>
             </div>
         </div>
     </footer>
 
-    <!-- JAVASCRIPT DE INTERACTIVIDAD, MODERACIÓN Y PANEL PRIVADO -->
+    <!-- JAVASCRIPT DE INTERACTIVIDAD, MODERACIÓN, VOLUNTARIOS Y PANEL PRIVADO -->
     <script>
-        // CLAVE DE ADMINISTRADOR PARA MODERAR Y ACCEDER AL SEGUIMIENTO
+        // CLAVE DE ADMINISTRADOR PARA MODERAR Y ACCEDER AL PANEL PRIVADO
         const CLAVE_ADMIN = "azul2026";
 
         function toggleMobileMenu() {
@@ -795,15 +894,16 @@
         }
 
         // =========================================================================
-        // 1. PANEL PRIVADO DE SEGUIMIENTO Y COMPROMISO MUTUO
+        // 1. PANEL PRIVADO: NAVEGACIÓN Y DESCARGA DE PLANILLAS DE COMPROMISO
         // =========================================================================
         function abrirPanelPrivado() {
-            const pass = prompt("Ingresá la clave de coordinación para acceder al registro privado de seguimiento:");
+            const pass = prompt("Ingresá la clave de coordinación para acceder al panel privado:");
             if (pass === null) return;
             if (pass === CLAVE_ADMIN) {
                 const panel = document.getElementById('panel-seguimiento-privado');
                 panel.classList.remove('hidden');
                 renderizarSeguimientos();
+                renderizarVoluntarios();
                 panel.scrollIntoView({ behavior: 'smooth' });
             } else {
                 alert("Clave incorrecta. Acceso denegado.");
@@ -814,6 +914,241 @@
             document.getElementById('panel-seguimiento-privado').classList.add('hidden');
         }
 
+        function cambiarTabPrivado(tab) {
+            const tabSeg = document.getElementById('tab-privado-seguimientos');
+            const tabVol = document.getElementById('tab-privado-voluntarios');
+            const btnSeg = document.getElementById('tab-btn-seguimientos');
+            const btnVol = document.getElementById('tab-btn-voluntarios');
+
+            if (tab === 'seguimientos') {
+                tabSeg.classList.remove('hidden');
+                tabVol.classList.add('hidden');
+                btnSeg.classList.add('bg-azul-600', 'text-white');
+                btnSeg.classList.remove('bg-slate-800', 'text-slate-300');
+                btnVol.classList.remove('bg-azul-600', 'text-white');
+                btnVol.classList.add('bg-slate-800', 'text-slate-300');
+            } else {
+                tabVol.classList.remove('hidden');
+                tabSeg.classList.add('hidden');
+                btnVol.classList.add('bg-azul-600', 'text-white');
+                btnVol.classList.remove('bg-slate-800', 'text-slate-300');
+                btnSeg.classList.remove('bg-azul-600', 'text-white');
+                btnSeg.classList.add('bg-slate-800', 'text-slate-300');
+            }
+        }
+
+        // PLANILLA 1: ACTA DE COMPROMISO MUTUO DE SEGUIMIENTO (PERSONA ACOMPAÑADA)
+        function descargarPlanillaCompromisoSeguimiento() {
+            const ventana = window.open('', '_blank');
+            ventana.document.write(`
+                <html>
+                <head>
+                    <title>Acta de Compromiso Mutuo - Red Azul Contiene</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; line-height: 1.6; max-width: 800px; margin: auto; }
+                        .header { text-align: center; border-bottom: 2px solid #0369a1; padding-bottom: 15px; margin-bottom: 25px; }
+                        .header h1 { margin: 0; color: #0f3854; font-size: 22px; }
+                        .header p { margin: 5px 0 0; font-size: 13px; color: #475569; }
+                        .box { border: 1px solid #cbd5e1; padding: 15px; border-radius: 8px; margin-bottom: 20px; background: #f8fafc; }
+                        .field { margin-bottom: 12px; font-size: 14px; }
+                        .line { display: inline-block; border-bottom: 1px solid #64748b; width: 250px; }
+                        .firmas { display: flex; justify-content: space-between; margin-top: 60px; text-align: center; font-size: 13px; }
+                        .firma-box { width: 45%; border-top: 1px solid #334155; padding-top: 8px; }
+                        @media print { .no-print { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="no-print" style="text-align:right; margin-bottom:15px;">
+                        <button onclick="window.print()" style="background:#0369a1; color:white; border:none; padding:10px 18px; border-radius:6px; cursor:pointer; font-weight:bold;">🖨️ Imprimir / Guardar como PDF</button>
+                    </div>
+                    <div class="header">
+                        <h1>RED AZUL CONTIENE</h1>
+                        <p>ACTA DE COMPROMISO MUTUO DE ACOMPAÑAMIENTO Y SEGUIMIENTO</p>
+                        <p>Azul, Provincia de Buenos Aires • Fecha: ____ / ____ / 2026</p>
+                    </div>
+                    <div class="box">
+                        <div class="field"><strong>Nombre y Apellido:</strong> <span class="line"></span> <strong>DNI:</strong> <span class="line" style="width:140px;"></span></div>
+                        <div class="field"><strong>Teléfono / WhatsApp:</strong> <span class="line" style="width:180px;"></span> <strong>Barrio / CAPS:</strong> <span class="line" style="width:180px;"></span></div>
+                        <div class="field"><strong>Turno Psicológico / Institución:</strong> <span class="line" style="width:340px;"></span></div>
+                    </div>
+                    <h3>1. Compromiso de la Red Azul Contiene:</h3>
+                    <p style="font-size:14px;">La coordinación y los voluntarios habilitados de <strong>Red Azul Contiene</strong> se comprometen a brindar acompañamiento comunitario, escucha respetuosa, confidencialidad absoluta y seguimiento tanto durante el tiempo de espera del turno profesional como en la continuidad posterior al mismo, sin reemplazar nunca la labor médica o psicológica.</p>
+                    <h3>2. Compromiso de la Persona Acompañada:</h3>
+                    <p style="font-size:14px;">Por su parte, la persona acompañada asume con seriedad el compromiso mutuo de mantener comunicación fluida con su referente asignado, avisar ante cualquier dificultad o imprevisto y asistir responsablemente al turno profesional programado en el sistema de salud.</p>
+                    <div class="firmas">
+                        <div class="firma-box">Firma y Aclaración<br>Persona Acompañada</div>
+                        <div class="firma-box">Gustavo Ariel Sosa<br>Coordinación General - Red Azul Contiene</div>
+                    </div>
+                </body>
+                </html>
+            `);
+            ventana.document.close();
+        }
+
+        // PLANILLA 2: ACTA DE COMPROMISO DE VOLUNTARIO CENTINELA
+        function descargarPlanillaCompromisoVoluntario() {
+            const ventana = window.open('', '_blank');
+            ventana.document.write(`
+                <html>
+                <head>
+                    <title>Planilla de Compromiso Voluntario Centinela - Red Azul Contiene</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; line-height: 1.6; max-width: 800px; margin: auto; }
+                        .header { text-align: center; border-bottom: 2px solid #059669; padding-bottom: 15px; margin-bottom: 25px; }
+                        .header h1 { margin: 0; color: #064e3b; font-size: 22px; }
+                        .header p { margin: 5px 0 0; font-size: 13px; color: #475569; }
+                        .box { border: 1px solid #cbd5e1; padding: 15px; border-radius: 8px; margin-bottom: 20px; background: #f8fafc; }
+                        .field { margin-bottom: 12px; font-size: 14px; }
+                        .line { display: inline-block; border-bottom: 1px solid #64748b; width: 250px; }
+                        ul { font-size: 14px; }
+                        li { margin-bottom: 8px; }
+                        .firmas { display: flex; justify-content: space-between; margin-top: 60px; text-align: center; font-size: 13px; }
+                        .firma-box { width: 45%; border-top: 1px solid #334155; padding-top: 8px; }
+                        @media print { .no-print { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="no-print" style="text-align:right; margin-bottom:15px;">
+                        <button onclick="window.print()" style="background:#059669; color:white; border:none; padding:10px 18px; border-radius:6px; cursor:pointer; font-weight:bold;">🖨️ Imprimir / Guardar como PDF</button>
+                    </div>
+                    <div class="header">
+                        <h1>RED AZUL CONTIENE</h1>
+                        <p>PLANILLA DE COMPROMISO Y RESPONSABILIDAD — VOLUNTARIO "CENTINELA"</p>
+                        <p>Azul, Provincia de Buenos Aires • Fecha: ____ / ____ / 2026</p>
+                    </div>
+                    <div class="box">
+                        <div class="field"><strong>Nombre y Apellido del Voluntario/a:</strong> <span class="line" style="width:280px;"></span></div>
+                        <div class="field"><strong>DNI:</strong> <span class="line" style="width:150px;"></span> <strong>Teléfono:</strong> <span class="line" style="width:200px;"></span></div>
+                        <div class="field"><strong>Barrio de referencia en Azul:</strong> <span class="line" style="width:300px;"></span></div>
+                    </div>
+                    <h3>Cláusulas de Compromiso Comunitario:</h3>
+                    <ul>
+                        <li><strong>Confidencialidad Absoluta:</strong> Guardar estricta reserva sobre la identidad, historias y situaciones personales de cada vecino acompañado.</li>
+                        <li><strong>Respeto y Escucha sin Prejuicios:</strong> Acompañar desde la empatía, sin emitir juicios de valor, diagnósticos ni indicaciones médicas.</li>
+                        <li><strong>Seriedad y Continuidad:</strong> Cumplir con los horarios y acuerdos asumidos con la persona acompañada y reportar novedades a la Coordinación General.</li>
+                        <li><strong>Activación de Urgencias:</strong> Ante cualquier situación de riesgo o crisis aguda (Nivel Rojo), dar aviso inmediato a la Coordinación y activar la línea 107 / Guardia Hospitalaria.</li>
+                    </ul>
+                    <div class="firmas">
+                        <div class="firma-box">Firma y Aclaración<br>Voluntario/a Centinela</div>
+                        <div class="firma-box">Gustavo Ariel Sosa<br>Coordinación General - Red Azul Contiene</div>
+                    </div>
+                </body>
+                </html>
+            `);
+            ventana.document.close();
+        }
+
+        // =========================================================================
+        // 2. GESTIÓN DE VOLUNTARIOS CENTINELA (ALTA PRIVADA / VISTA PÚBLICA)
+        // =========================================================================
+        const voluntariosBase = [
+            {
+                id: "vol-base-1",
+                nombre: "Gustavo Ariel Sosa",
+                barrio: "Coordinación General • Azul",
+                compromiso: "Articulación territorial, seguimiento integral de casos y acompañamiento en turnos de salud mental."
+            }
+        ];
+
+        function agregarVoluntario(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('vol-nombre').value.trim();
+            const barrio = document.getElementById('vol-barrio').value.trim();
+            const compromiso = document.getElementById('vol-compromiso-texto').value.trim();
+            const firmada = document.getElementById('vol-acta-firmada').checked;
+
+            if (!firmada) {
+                alert("Debe confirmarse la firma de la planilla de compromiso.");
+                return;
+            }
+
+            const nuevoVol = {
+                id: 'vol-' + Date.now(),
+                nombre,
+                barrio,
+                compromiso
+            };
+
+            let voluntarios = JSON.parse(localStorage.getItem('red_azul_voluntarios')) || [];
+            voluntarios.push(nuevoVol);
+            localStorage.setItem('red_azul_voluntarios', JSON.stringify(voluntarios));
+
+            event.target.reset();
+            renderizarVoluntarios();
+            alert("Voluntario habilitado y publicado correctamente.");
+        }
+
+        function eliminarVoluntario(id) {
+            if (confirm("¿Seguro que querés dar de baja a este voluntario de la lista?")) {
+                let voluntarios = JSON.parse(localStorage.getItem('red_azul_voluntarios')) || [];
+                voluntarios = voluntarios.filter(v => v.id !== id);
+                localStorage.setItem('red_azul_voluntarios', JSON.stringify(voluntarios));
+                renderizarVoluntarios();
+            }
+        }
+
+        function renderizarVoluntarios() {
+            const guardados = JSON.parse(localStorage.getItem('red_azul_voluntarios')) || [];
+            const listaCompleta = [...voluntariosBase, ...guardados];
+
+            // 1. Renderizar vista pública (Solo lectura, para todos los visitantes)
+            const grillaPublica = document.getElementById('grilla-voluntarios-publica');
+            if (grillaPublica) {
+                grillaPublica.innerHTML = listaCompleta.map(v => `
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                </div>
+                                <span class="text-[11px] font-bold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full">
+                                    <i class="fa-solid fa-file-signature"></i> Compromiso Activo
+                                </span>
+                            </div>
+                            <h3 class="font-heading font-bold text-lg text-slate-900">${v.nombre}</h3>
+                            <p class="text-xs font-semibold text-azul-700 mb-3"><i class="fa-solid fa-location-dot"></i> ${v.barrio}</p>
+                            <p class="text-xs text-slate-600 leading-relaxed bg-white p-3 rounded-xl border border-slate-200/80">
+                                <strong>Compromiso asumido:</strong> ${v.compromiso}
+                            </p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // 2. Renderizar vista privada en panel de administración
+            const grillaAdmin = document.getElementById('lista-voluntarios-admin');
+            if (grillaAdmin) {
+                grillaAdmin.innerHTML = listaCompleta.map(v => `
+                    <div class="bg-slate-800 rounded-xl p-4 border border-slate-700 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-start justify-between gap-2">
+                                <h4 class="font-bold text-white text-sm">${v.nombre}</h4>
+                                ${!v.id.startsWith('vol-base-') ? `
+                                    <button onclick="eliminarVoluntario('${v.id}')" title="Dar de baja" class="text-slate-400 hover:text-red-400 text-xs">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                ` : '<span class="text-[10px] text-azul-400 font-semibold">Fijo</span>'}
+                            </div>
+                            <p class="text-xs text-emerald-400 mt-0.5">${v.barrio}</p>
+                            <p class="text-xs text-slate-300 mt-2">${v.compromiso}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function copiarCodigoVoluntariosFijos() {
+            const guardados = JSON.parse(localStorage.getItem('red_azul_voluntarios')) || [];
+            const listaCompleta = [...voluntariosBase, ...guardados];
+            const texto = "const voluntariosBase = " + JSON.stringify(listaCompleta, null, 4) + ";";
+            navigator.clipboard.writeText(texto).then(() => {
+                alert("Código copiado. Si reemplazás 'const voluntariosBase = [...]' en tu GitHub con esto, todos los vecinos verán la lista actualizada desde cualquier dispositivo.");
+            });
+        }
+
+        // =========================================================================
+        // 3. PANEL PRIVADO DE SEGUIMIENTO Y COMPROMISO MUTUO
+        // =========================================================================
         function agregarPersonaSeguimiento(event) {
             event.preventDefault();
             const nombre = document.getElementById('seg-nombre').value.trim();
@@ -1029,7 +1364,7 @@
         }
 
         // =========================================================================
-        // 2. SISTEMA DEL MURO DE EXPERIENCIAS CON MODERACIÓN
+        // 4. SISTEMA DEL MURO DE EXPERIENCIAS CON MODERACIÓN
         // =========================================================================
         const experienciasBase = [
             {
@@ -1137,10 +1472,13 @@
             }
         }
 
-        window.addEventListener('DOMContentLoaded', cargarMuro);
+        window.addEventListener('DOMContentLoaded', () => {
+            cargarMuro();
+            renderizarVoluntarios();
+        });
 
         // =========================================================================
-        // 3. HERRAMIENTAS INTERACTIVAS Y FORMULARIO GENERAL
+        // 5. HERRAMIENTAS INTERACTIVAS Y FORMULARIO GENERAL
         // =========================================================================
         let breathInterval = null;
         function toggleBreath() {
