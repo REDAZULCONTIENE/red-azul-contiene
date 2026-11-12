@@ -134,25 +134,28 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- PANEL PRIVADO DE COORDINACIÓN (SEGUIMIENTO Y ALTA DE VOLUNTARIOS)         -->
+    <!-- PANEL PRIVADO DE COORDINACIÓN (SEGUIMIENTO, PLANILLAS Y VOLUNTARIOS)      -->
     <!-- ========================================================================= -->
     <section id="panel-seguimiento-privado" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 my-8 bg-slate-900 text-slate-100 rounded-3xl border-2 border-azul-500 shadow-2xl">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-700">
             <div>
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold mb-2">
-                    <i class="fa-solid fa-lock"></i> ÁREA PRIVADA DE COORDINACIÓN (SOLO ADMINISTRADOR)
+                    <i class="fa-solid fa-lock"></i> ÁREA PRIVADA DE COORDINACIÓN (EXCLUSIVO ADMINISTRADOR)
                 </span>
                 <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white">Gestión de Acompañamientos y Voluntarios</h2>
-                <p class="text-xs sm:text-sm text-slate-400 mt-1">Administración formal de casos, compromisos mutuos y alta exclusiva de Voluntarios Centinela.</p>
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">Acceso restringido para seguimiento de casos, descarga de actas de compromiso y alta de Voluntarios Centinela.</p>
             </div>
             <div class="flex flex-wrap gap-2">
                 <button onclick="descargarPlanillaCompromisoSeguimiento()" class="bg-azul-600 hover:bg-azul-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-2 shadow">
-                    <i class="fa-solid fa-file-contract"></i> Descargar Acta Compromiso (Acompañado)
+                    <i class="fa-solid fa-file-contract"></i> Acta Compromiso (Acompañado)
                 </button>
-                <button onclick="exportarSeguimientosCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-2 shadow">
+                <button onclick="descargarPlanillaCompromisoVoluntario()" class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-file-signature"></i> Acta Compromiso (Voluntario)
+                </button>
+                <button onclick="exportarSeguimientosCSV()" class="bg-slate-700 hover:bg-slate-600 text-emerald-300 border border-slate-600 text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-2 shadow">
                     <i class="fa-solid fa-file-excel"></i> Respaldar Excel (CSV)
                 </button>
-                <button onclick="cerrarPanelPrivado()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-2">
+                <button onclick="cerrarPanelPrivado()" class="bg-red-900/60 hover:bg-red-800 text-red-200 text-xs font-bold px-3.5 py-2.5 rounded-xl transition flex items-center gap-2">
                     <i class="fa-solid fa-eye-slash"></i> Cerrar Panel
                 </button>
             </div>
@@ -285,12 +288,6 @@
                         <i class="fa-solid fa-plus-circle"></i> Publicar Voluntario Habilitado
                     </button>
                 </form>
-
-                <div class="mt-4 pt-4 border-t border-slate-700">
-                    <button onclick="descargarPlanillaCompromisoVoluntario()" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-file-arrow-down"></i> Descargar Planilla de Voluntario
-                    </button>
-                </div>
             </div>
 
             <div class="lg:col-span-2 space-y-4">
@@ -652,19 +649,12 @@
     <!-- SECCIÓN PÚBLICA DE VOLUNTARIOS CENTINELA (SOLO LECTURA PARA EL PÚBLICO)   -->
     <!-- ========================================================================= -->
     <section id="voluntarios" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white rounded-3xl my-8 border border-slate-200 shadow-sm">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 border-b border-slate-100 pb-6">
-            <div>
-                <span class="text-emerald-700 font-bold uppercase tracking-wider text-xs bg-emerald-50 px-3 py-1 rounded-full">Equipo Habilitado • Compromiso Barrial</span>
-                <h2 class="font-heading font-bold text-2xl sm:text-4xl text-azul-900 mt-3 mb-2">Voluntarios "Centinela" en Azul</h2>
-                <p class="text-slate-600 text-sm max-w-2xl">
-                    Personas de nuestros barrios habilitadas por la coordinación tras suscribir su <strong>Planilla de Compromiso y Confidencialidad</strong>. Nadie se inscribe de forma automática: cada referente asume una responsabilidad real con la comunidad.
-                </p>
-            </div>
-            <div class="flex flex-wrap gap-2">
-                <button onclick="descargarPlanillaCompromisoVoluntario()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
-                    <i class="fa-solid fa-file-lines text-azul-600"></i> Ver / Descargar Planilla de Compromiso
-                </button>
-            </div>
+        <div class="mb-10 border-b border-slate-100 pb-6">
+            <span class="text-emerald-700 font-bold uppercase tracking-wider text-xs bg-emerald-50 px-3 py-1 rounded-full">Equipo Habilitado • Compromiso Barrial</span>
+            <h2 class="font-heading font-bold text-2xl sm:text-4xl text-azul-900 mt-3 mb-2">Voluntarios "Centinela" en Azul</h2>
+            <p class="text-slate-600 text-sm max-w-3xl">
+                Personas de nuestros barrios habilitadas exclusivamente por la coordinación tras entrevistarse y suscribir su <strong>Planilla de Compromiso y Confidencialidad</strong>. Nadie se inscribe ni descarga documentación sin autorización previa: cada referente asume una responsabilidad real con la comunidad.
+            </p>
         </div>
 
         <!-- GRILLA PÚBLICA DE VOLUNTARIOS (SOLO SE CARGA DESDE EL PANEL ADMIN) -->
@@ -887,6 +877,7 @@
     <script>
         // CLAVE DE ADMINISTRADOR PARA MODERAR Y ACCEDER AL PANEL PRIVADO
         const CLAVE_ADMIN = "azul2026";
+        let adminAutorizado = false;
 
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
@@ -894,12 +885,13 @@
         }
 
         // =========================================================================
-        // 1. PANEL PRIVADO: NAVEGACIÓN Y DESCARGA DE PLANILLAS DE COMPROMISO
+        // 1. PANEL PRIVADO: NAVEGACIÓN Y DESCARGA PROTEGIDA DE PLANILLAS
         // =========================================================================
         function abrirPanelPrivado() {
             const pass = prompt("Ingresá la clave de coordinación para acceder al panel privado:");
             if (pass === null) return;
             if (pass === CLAVE_ADMIN) {
+                adminAutorizado = true;
                 const panel = document.getElementById('panel-seguimiento-privado');
                 panel.classList.remove('hidden');
                 renderizarSeguimientos();
@@ -911,7 +903,19 @@
         }
 
         function cerrarPanelPrivado() {
+            adminAutorizado = false;
             document.getElementById('panel-seguimiento-privado').classList.add('hidden');
+        }
+
+        function verificarPermisoAdministrador() {
+            if (adminAutorizado) return true;
+            const pass = prompt("Acceso restringido. Ingresá la clave de coordinación:");
+            if (pass === CLAVE_ADMIN) {
+                adminAutorizado = true;
+                return true;
+            }
+            alert("No tenés autorización para descargar esta planilla.");
+            return false;
         }
 
         function cambiarTabPrivado(tab) {
@@ -937,8 +941,9 @@
             }
         }
 
-        // PLANILLA 1: ACTA DE COMPROMISO MUTUO DE SEGUIMIENTO (PERSONA ACOMPAÑADA)
+        // PLANILLA 1: ACTA DE COMPROMISO MUTUO DE SEGUIMIENTO (SOLO CON PERMISO)
         function descargarPlanillaCompromisoSeguimiento() {
+            if (!verificarPermisoAdministrador()) return;
             const ventana = window.open('', '_blank');
             ventana.document.write(`
                 <html>
@@ -985,8 +990,9 @@
             ventana.document.close();
         }
 
-        // PLANILLA 2: ACTA DE COMPROMISO DE VOLUNTARIO CENTINELA
+        // PLANILLA 2: ACTA DE COMPROMISO DE VOLUNTARIO CENTINELA (SOLO CON PERMISO)
         function descargarPlanillaCompromisoVoluntario() {
+            if (!verificarPermisoAdministrador()) return;
             const ventana = window.open('', '_blank');
             ventana.document.write(`
                 <html>
@@ -1052,6 +1058,8 @@
 
         function agregarVoluntario(event) {
             event.preventDefault();
+            if (!verificarPermisoAdministrador()) return;
+
             const nombre = document.getElementById('vol-nombre').value.trim();
             const barrio = document.getElementById('vol-barrio').value.trim();
             const compromiso = document.getElementById('vol-compromiso-texto').value.trim();
@@ -1079,6 +1087,7 @@
         }
 
         function eliminarVoluntario(id) {
+            if (!verificarPermisoAdministrador()) return;
             if (confirm("¿Seguro que querés dar de baja a este voluntario de la lista?")) {
                 let voluntarios = JSON.parse(localStorage.getItem('red_azul_voluntarios')) || [];
                 voluntarios = voluntarios.filter(v => v.id !== id);
@@ -1151,6 +1160,8 @@
         // =========================================================================
         function agregarPersonaSeguimiento(event) {
             event.preventDefault();
+            if (!verificarPermisoAdministrador()) return;
+
             const nombre = document.getElementById('seg-nombre').value.trim();
             const dni = document.getElementById('seg-dni').value.trim();
             const telefono = document.getElementById('seg-telefono').value.trim();
@@ -1336,6 +1347,7 @@
         }
 
         function eliminarSeguimiento(id) {
+            if (!verificarPermisoAdministrador()) return;
             if (confirm("¿Seguro que querés eliminar esta ficha de seguimiento?")) {
                 let registros = JSON.parse(localStorage.getItem('red_azul_seguimientos')) || [];
                 registros = registros.filter(r => r.id !== id);
@@ -1345,6 +1357,7 @@
         }
 
         function exportarSeguimientosCSV() {
+            if (!verificarPermisoAdministrador()) return;
             let registros = JSON.parse(localStorage.getItem('red_azul_seguimientos')) || [];
             if (registros.length === 0) {
                 alert("No hay registros cargados para exportar.");
