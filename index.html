@@ -131,6 +131,108 @@
         </div>
     </section>
 
+    <!-- ========================================================================= -->
+    <!-- PANEL PRIVADO DE SEGUIMIENTO Y COMPROMISO MUTUO (OCULTO POR DEFECTO)      -->
+    <!-- ========================================================================= -->
+    <section id="panel-seguimiento-privado" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 my-8 bg-slate-900 text-slate-100 rounded-3xl border-2 border-azul-500 shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-700">
+            <div>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold mb-2">
+                    <i class="fa-solid fa-lock"></i> ÁREA PRIVADA DE COORDINACIÓN (SOLO LOCAL EN ESTE DISPOSITIVO)
+                </span>
+                <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white">Registro y Seguimiento de Acompañamiento</h2>
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">Gestión seria de casos, compromiso mutuo y acompañamiento antes y después del turno psicológico.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="exportarSeguimientosCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-file-excel"></i> Respaldar / Descargar Planilla
+                </button>
+                <button onclick="cerrarPanelPrivado()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-eye-slash"></i> Cerrar Panel
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8 items-start">
+            <!-- FORMULARIO DE ALTA DE PERSONA Y COMPROMISO -->
+            <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 lg:col-span-1">
+                <h3 class="font-heading font-bold text-lg text-white mb-1 flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus text-azul-400"></i> Incorporar Persona a la Red
+                </h3>
+                <p class="text-xs text-slate-400 mb-5">Completá los datos formales para iniciar el seguimiento.</p>
+
+                <form onsubmit="agregarPersonaSeguimiento(event)" class="space-y-3.5">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre y Apellido *</label>
+                        <input type="text" id="seg-nombre" required placeholder="Ej: Juan Pérez" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-azul-400">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">DNI *</label>
+                            <input type="text" id="seg-dni" required placeholder="Sin puntos" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-azul-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Teléfono / WhatsApp *</label>
+                            <input type="tel" id="seg-telefono" required placeholder="2281-XXXXXX" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-azul-400">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Barrio / CAPS</label>
+                            <input type="text" id="seg-barrio" placeholder="Ej: Piazza Sur" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-azul-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Nivel Inicial</label>
+                            <select id="seg-nivel" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2 text-white text-xs focus:outline-none focus:border-azul-400">
+                                <option value="Verde">🟢 Verde (Escucha)</option>
+                                <option value="Amarillo" selected>🟡 Amarillo (Espera turno)</option>
+                                <option value="Rojo">🔴 Rojo (Urgencia)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Detalle del Turno Psicológico (Si ya tiene)</label>
+                        <input type="text" id="seg-turno" placeholder="Ej: Pendiente / 25-11 10hs CAPS 6" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-azul-400">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Acuerdo / Observaciones iniciales</label>
+                        <textarea id="seg-notas" rows="2" placeholder="Motivo de consulta o pautas acordadas..." class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3.5 py-2 text-white text-xs focus:outline-none focus:border-azul-400"></textarea>
+                    </div>
+
+                    <!-- COMPROMISO DE AMBAS PARTES -->
+                    <div class="bg-azul-900/50 border border-azul-700/70 rounded-xl p-3">
+                        <label class="flex items-start gap-2.5 cursor-pointer">
+                            <input type="checkbox" id="seg-compromiso" required class="mt-0.5 rounded text-azul-500 focus:ring-0">
+                            <span class="text-[11px] text-azul-100 leading-snug">
+                                <strong>Compromiso Mutuo Establecido:</strong> Se acuerda formalmente que la Red acompañará en el proceso y la persona se compromete a sostener el contacto y asistir al turno asignado.
+                            </span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-azul-600 hover:bg-azul-500 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-file-signature"></i> Registrar y Activar Seguimiento
+                    </button>
+                </form>
+            </div>
+
+            <!-- LISTADO Y BITÁCORA DE PERSONAS EN SEGUIMIENTO -->
+            <div class="lg:col-span-2 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-800/80 px-4 py-3 rounded-xl border border-slate-700">
+                    <span class="text-xs font-semibold text-slate-300">Personas actualmente en acompañamiento: <strong id="contador-seguimientos" class="text-azul-400">0</strong></span>
+                    <input type="text" id="buscar-seguimiento" onkeyup="renderizarSeguimientos()" placeholder="Buscar por nombre o DNI..." class="bg-slate-900 border border-slate-600 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-azul-400">
+                </div>
+
+                <div id="lista-seguimientos" class="space-y-4">
+                    <!-- Tarjetas generadas dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- SECCIÓN: CUIDAR LA SALUD MENTAL -->
     <section id="salud-mental" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white rounded-3xl my-8 border border-slate-200 shadow-sm">
         <div class="max-w-4xl mx-auto">
@@ -672,12 +774,19 @@
             <p class="font-semibold text-slate-300">RED AZUL CONTIENE • AZUL, PROVINCIA DE BUENOS AIRES</p>
             <p>Fundador y Coordinador General: Gustavo Ariel Sosa (Técnico en Administración)</p>
             <p class="text-slate-500 max-w-2xl mx-auto">Este proyecto no reemplaza la atención médica profesional, sino que genera un puente comunitario de escucha y acompañamiento en cercanía.</p>
+            
+            <!-- BOTÓN DE ACCESO AL PANEL PRIVADO DE SEGUIMIENTO -->
+            <div class="pt-4">
+                <button onclick="abrirPanelPrivado()" class="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-azul-400 border border-slate-800 hover:border-slate-700 px-3 py-1.5 rounded-lg transition">
+                    <i class="fa-solid fa-lock"></i> Acceso Coordinación (Seguimiento Privado)
+                </button>
+            </div>
         </div>
     </footer>
 
-    <!-- JAVASCRIPT DE INTERACTIVIDAD Y MODERACIÓN -->
+    <!-- JAVASCRIPT DE INTERACTIVIDAD, MODERACIÓN Y PANEL PRIVADO -->
     <script>
-        // CLAVE DE ADMINISTRADOR PARA MODERAR/BORRAR MENSAJES
+        // CLAVE DE ADMINISTRADOR PARA MODERAR Y ACCEDER AL SEGUIMIENTO
         const CLAVE_ADMIN = "azul2026";
 
         function toggleMobileMenu() {
@@ -685,7 +794,243 @@
             menu.classList.toggle('hidden');
         }
 
-        // --- SISTEMA DEL MURO DE EXPERIENCIAS CON MODERACIÓN ---
+        // =========================================================================
+        // 1. PANEL PRIVADO DE SEGUIMIENTO Y COMPROMISO MUTUO
+        // =========================================================================
+        function abrirPanelPrivado() {
+            const pass = prompt("Ingresá la clave de coordinación para acceder al registro privado de seguimiento:");
+            if (pass === null) return;
+            if (pass === CLAVE_ADMIN) {
+                const panel = document.getElementById('panel-seguimiento-privado');
+                panel.classList.remove('hidden');
+                renderizarSeguimientos();
+                panel.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert("Clave incorrecta. Acceso denegado.");
+            }
+        }
+
+        function cerrarPanelPrivado() {
+            document.getElementById('panel-seguimiento-privado').classList.add('hidden');
+        }
+
+        function agregarPersonaSeguimiento(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('seg-nombre').value.trim();
+            const dni = document.getElementById('seg-dni').value.trim();
+            const telefono = document.getElementById('seg-telefono').value.trim();
+            const barrio = document.getElementById('seg-barrio').value.trim() || "Sin especificar";
+            const nivel = document.getElementById('seg-nivel').value;
+            const turno = document.getElementById('seg-turno').value.trim() || "Pendiente de asignación";
+            const notas = document.getElementById('seg-notas').value.trim();
+            const compromiso = document.getElementById('seg-compromiso').checked;
+
+            if (!compromiso) {
+                alert("Es obligatorio confirmar el compromiso mutuo para iniciar el seguimiento.");
+                return;
+            }
+
+            const fechaHoy = new Date().toLocaleDateString('es-AR');
+
+            const nuevoRegistro = {
+                id: 'seg-' + Date.now(),
+                nombre,
+                dni,
+                telefono,
+                barrio,
+                nivel,
+                turno,
+                etapa: "1. Ingreso y Espera Activa",
+                fechaAlta: fechaHoy,
+                bitacora: [
+                    {
+                        fecha: fechaHoy,
+                        detalle: `Alta en la Red con Compromiso Mutuo firmado/acordado. ${notas ? 'Obs: ' + notas : ''}`
+                    }
+                ]
+            };
+
+            let registros = JSON.parse(localStorage.getItem('red_azul_seguimientos')) || [];
+            registros.unshift(nuevoRegistro);
+            localStorage.setItem('red_azul_seguimientos', JSON.stringify(registros));
+
+            event.target.reset();
+            renderizarSeguimientos();
+        }
+
+        function renderizarSeguimientos() {
+            const contenedor = document.getElementById('lista-seguimientos');
+            const contador = document.getElementById('contador-seguimientos');
+            const filtro = (document.getElementById('buscar-seguimiento')?.value || '').toLowerCase();
+
+            let registros = JSON.parse(localStorage.getItem('red_azul_seguimientos')) || [];
+            contador.innerText = registros.length;
+
+            const filtrados = registros.filter(r => 
+                r.nombre.toLowerCase().includes(filtro) || 
+                r.dni.includes(filtro)
+            );
+
+            if (filtrados.length === 0) {
+                contenedor.innerHTML = `
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 text-center text-slate-400 text-xs sm:text-sm">
+                        No hay personas registradas en seguimiento con ese criterio.
+                    </div>`;
+                return;
+            }
+
+            contenedor.innerHTML = filtrados.map(item => {
+                let badgeNivel = "bg-amber-500/20 text-amber-300 border-amber-500/40";
+                if (item.nivel === "Verde") badgeNivel = "bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+                if (item.nivel === "Rojo") badgeNivel = "bg-rose-500/20 text-rose-300 border-rose-500/40";
+
+                const telLimpio = item.telefono.replace(/\D/g, '');
+
+                return `
+                <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700 shadow-md space-y-4">
+                    <div class="flex flex-wrap items-start justify-between gap-2 border-b border-slate-700 pb-3">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h4 class="font-heading font-bold text-lg text-white">${item.nombre}</h4>
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${badgeNivel}">Nivel ${item.nivel}</span>
+                                <span class="text-[11px] bg-azul-900 text-azul-200 border border-azul-700 px-2.5 py-0.5 rounded-full font-semibold">
+                                    <i class="fa-solid fa-handshake"></i> Compromiso Activo
+                                </span>
+                            </div>
+                            <div class="text-xs text-slate-400 mt-1 flex flex-wrap gap-x-4 gap-y-1">
+                                <span><strong>DNI:</strong> ${item.dni}</span>
+                                <span><strong>Tel:</strong> ${item.telefono}</span>
+                                <span><strong>Barrio:</strong> ${item.barrio}</span>
+                                <span><strong>Ingreso:</strong> ${item.fechaAlta}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <a href="https://wa.me/549${telLimpio}?text=Hola%20${encodeURIComponent(item.nombre)},%20te%20escribo%20de%20Red%20Azul%20Contiene%20para%20saber%20c%C3%B3mo%20ven%C3%ADs%20y%20acompa%C3%B1arte%20en%20tu%20seguimiento." target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                                <i class="fa-brands fa-whatsapp"></i> Contactar
+                            </a>
+                            <button onclick="eliminarSeguimiento('${item.id}')" title="Eliminar ficha" class="bg-slate-700 hover:bg-red-600 text-slate-300 hover:text-white text-xs px-2.5 py-1.5 rounded-lg transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ESTADO DEL TURNO Y ETAPA DE ACOMPAÑAMIENTO -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-900/70 p-3.5 rounded-xl border border-slate-700/80 text-xs">
+                        <div>
+                            <span class="text-slate-400 block text-[11px]">Etapa del Proceso:</span>
+                            <select onchange="cambiarEtapaSeguimiento('${item.id}', this.value)" class="mt-1 w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-white text-xs font-semibold">
+                                <option value="1. Ingreso y Espera Activa" ${item.etapa === '1. Ingreso y Espera Activa' ? 'selected' : ''}>1. Ingreso y Espera Activa (Pre-turno)</option>
+                                <option value="2. Turno Asignado (Recordatorio)" ${item.etapa === '2. Turno Asignado (Recordatorio)' ? 'selected' : ''}>2. Turno Asignado (Acompañamiento al turno)</option>
+                                <option value="3. Post-Turno (Seguimiento de Tratamiento)" ${item.etapa === '3. Post-Turno (Seguimiento de Tratamiento)' ? 'selected' : ''}>3. Post-Turno (Seguimiento continuo)</option>
+                                <option value="4. Alta / Estabilizado en Red" ${item.etapa === '4. Alta / Estabilizado en Red' ? 'selected' : ''}>4. Estabilizado / Seguimiento espaciado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block text-[11px]">Turno Psicológico / Institución:</span>
+                            <div class="flex items-center gap-1.5 mt-1">
+                                <input type="text" value="${item.turno}" onchange="actualizarTurnoSeguimiento('${item.id}', this.value)" class="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-amber-300 text-xs font-medium">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BITÁCORA DE AVANCES Y COMPROMISO -->
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Bitácora de Seguimiento (Pre y Post Turno):</span>
+                        <div class="space-y-1.5 max-h-32 overflow-y-auto pr-1 mb-2">
+                            ${item.bitacora.map(b => `
+                                <div class="text-xs bg-slate-900/50 px-3 py-1.5 rounded-lg border-l-2 border-azul-500 text-slate-300">
+                                    <strong class="text-azul-300">[${b.fecha}]</strong> ${b.detalle}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="nota-${item.id}" placeholder="Anotar avance (Ej: Asistió al turno, se coordinó próximo encuentro...)" class="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-azul-400">
+                            <button onclick="agregarNotaBitacora('${item.id}')" class="bg-azul-600 hover:bg-azul-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                                + Anotar
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function cambiarEtapaSeguimiento(id, nuevaEtapa) {
+            let registros = JSON.parse(localStorage.getItem('red_azul_seguimientos')) || [];
+            const idx = registros.findIndex(r => r.id === id);
+            if (idx !== -1) {
+                registros[idx].etapa = nuevaEtapa;
+                registros[idx].bitacora.unshift({
+                    fecha: new Date().toLocaleDateString('es-AR'),
+                    detalle: `Cambio de etapa a: ${nuevaEtapa}`
+                });
+                localStorage.setItem('red_azul_seguimientos', JSON.stringify(registros));
+                renderizarSeguimientos();
+            }
+        }
+
+        function actualizarTurnoSeguimiento(id, nuevoTurno) {
+            let registros = JSON.parse(localStorage.getItem('red_azul_seguimientos')) || [];
+            const idx = registros.findIndex(r => r.id === id);
+            if (idx !== -1) {
+                registros[idx].turno = nuevoTurno;
+                registros[idx].bitacora.unshift({
+                    fecha: new Date().toLocaleDateString('es-AR'),
+                    detalle: `Actualización de turno psicológico: ${nuevoTurno}`
+                });
+                localStorage.setItem('red_azul_seguimientos', JSON.stringify(registros));
+                renderizarSeguimientos();
+            }
+        }
+
+        function agregarNotaBitacora(id) {
+            const input = document.getElementById('nota-' + id);
+            const texto = input.value.trim();
+            if (!texto) return;
+
+            let registros = JSON.parse(localStorage.getItem('red_azul_seguimientos')) || [];
+            const idx = registros.findIndex(r => r.id === id);
+            if (idx !== -1) {
+                registros[idx].bitacora.unshift({
+                    fecha: new Date().toLocaleDateString('es-AR'),
+                    detalle: texto
+                });
+                localStorage.setItem('red_azul_seguimientos', JSON.stringify(registros));
+                renderizarSeguimientos();
+            }
+        }
+
+        function eliminarSeguimiento(id) {
+            if (confirm("¿Seguro que querés eliminar esta ficha de seguimiento?")) {
+                let registros = JSON.parse(localStorage.getItem('red_azul_seguimientos')) || [];
+                registros = registros.filter(r => r.id !== id);
+                localStorage.setItem('red_azul_seguimientos', JSON.stringify(registros));
+                renderizarSeguimientos();
+            }
+        }
+
+        function exportarSeguimientosCSV() {
+            let registros = JSON.parse(localStorage.getItem('red_azul_seguimientos')) || [];
+            if (registros.length === 0) {
+                alert("No hay registros cargados para exportar.");
+                return;
+            }
+            let csv = "Nombre y Apellido;DNI;Telefono;Barrio;Nivel;Etapa;Turno Psicologico;Fecha Alta;Ultimo Registro\n";
+            registros.forEach(r => {
+                const ultimo = r.bitacora[0] ? `${r.bitacora[0].fecha}: ${r.bitacora[0].detalle}` : "";
+                csv += `"${r.nombre}";"${r.dni}";"${r.telefono}";"${r.barrio}";"${r.nivel}";"${r.etapa}";"${r.turno}";"${r.fechaAlta}";"${ultimo}"\n`;
+            });
+            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `Seguimiento_Red_Azul_Contiene_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+        }
+
+        // =========================================================================
+        // 2. SISTEMA DEL MURO DE EXPERIENCIAS CON MODERACIÓN
+        // =========================================================================
         const experienciasBase = [
             {
                 id: "base-1",
@@ -771,13 +1116,11 @@
 
         function borrarPublicacion(id) {
             const password = prompt("Ingresá la clave de moderador para eliminar este comentario:");
-            
             if (password === null) return;
 
             if (password === CLAVE_ADMIN) {
                 if (confirm("¿Estás seguro de que querés eliminar esta publicación?")) {
                     let guardados = JSON.parse(localStorage.getItem('muro_experiencias')) || [];
-                    
                     if (id && id.startsWith('user-')) {
                         guardados = guardados.filter(item => item.id !== id);
                         localStorage.setItem('muro_experiencias', JSON.stringify(guardados));
@@ -786,7 +1129,6 @@
                         if (id) eliminadosBase.push(id);
                         localStorage.setItem('muro_base_eliminados', JSON.stringify(eliminadosBase));
                     }
-                    
                     alert("Publicación eliminada correctamente.");
                     cargarMuro();
                 }
@@ -797,7 +1139,9 @@
 
         window.addEventListener('DOMContentLoaded', cargarMuro);
 
-        // Respiración guiada
+        // =========================================================================
+        // 3. HERRAMIENTAS INTERACTIVAS Y FORMULARIO GENERAL
+        // =========================================================================
         let breathInterval = null;
         function toggleBreath() {
             const btn = document.getElementById('btn-start-breath');
@@ -839,7 +1183,6 @@
             breathInterval = setInterval(runCycle, 12000);
         }
 
-        // Checklist de Anclaje
         function toggleStep(element) {
             element.classList.toggle('bg-azul-50');
             element.classList.toggle('border-azul-400');
@@ -853,7 +1196,6 @@
             }
         }
 
-        // Filtro de recursos
         function filterResources(category) {
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => {
@@ -873,7 +1215,6 @@
             });
         }
 
-        // Envío de formulario general a WhatsApp
         function handleFormSubmit(event) {
             event.preventDefault();
             const inputs = event.target.querySelectorAll('input, select, textarea');
